@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Turnero" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimaryVariant">@color/Primary2</item>
+        <item name="colorOnPrimary">@color/White</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Primary</item>
+        <item name="colorSecondaryVariant">@color/SecondaryTwo</item>
+        <item name="colorOnSecondary">@color/Black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/Secondary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

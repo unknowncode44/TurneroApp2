@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@drawable/shape_card04"
+
+            >
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/h_cipo"
+                android:id="@+id/imagenClinica"
+                android:layout_width="320dp"
+                android:layout_height="80dp">
+
+            </ImageView>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@+id/imagenClinica"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/Black"
+                android:layout_centerHorizontal="true"
+                android:text="Hospital Dr. Pedro Moguillanski"
+                android:fontFamily="@font/rubik_semi_bold"
+                android:textSize="20sp">
+
+            </TextView>
+            <Button
+                android:id="@+id/speciality_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:text="Ver Especialidades"
+                android:textColor="@color/Secondary"
+                android:background="@drawable/shape_button02">
+
+            </Button>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
