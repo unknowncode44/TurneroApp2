@@ -1,7 +1,10 @@
 package com.morellana.turneroapp
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
@@ -30,14 +33,7 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar()
-
-        val ab: ActionBar? = supportActionBar
-        if(ab != null){
-            ab.setHomeAsUpIndicator(R.drawable.nav_icon)
-            ab.setDisplayHomeAsUpEnabled(true)
-            ab.title = "Nombre de Usuario"
-        }
+        navBar()
 
         //doctorCardsRecyclerView = findViewById(R.id.recycler_dr_cards)
         //doctorCardsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -61,6 +57,30 @@ class DashboardUserActivity : AppCompatActivity(){
         //getAvailableDoctor()
 
 
+    }
+
+    //Creamos la funcion para la apertura del Navegador Superior
+    fun navBar(){
+        val nav: androidx.appcompat.widget.Toolbar = binding.main.toolbar
+        setSupportActionBar(nav)
+        val ab: ActionBar? = supportActionBar
+        if(ab != null){
+            ab.setHomeAsUpIndicator(R.drawable.nav_icon)
+            ab.setDisplayHomeAsUpEnabled(true)
+            ab.title = "Nombre de Usuario"
+        }
+    }
+    //Implementa el boton para abrir el Nav Lateral
+    @SuppressLint("WrongConstant")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            android.R.id.home -> {
+                binding.drawerLayout.openDrawer(Gravity.START)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun getProfesionalData() {

@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "148296686083",
+    "firebase_url": "https://turnero-d0e47-default-rtdb.firebaseio.com",
+    "project_id": "turnero-d0e47",
+    "storage_bucket": "turnero-d0e47.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296686083:android:2c3acddcd2d2799a8f4c36",
+        "android_client_info": {
+          "package_name": "com.example.turnero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296686083-fcliv3qbkhpvmesgtp7fso7lg4ivqo0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4FwQhWJ8fHHQ5N4SD_9OWouO68aMNodI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296686083-fcliv3qbkhpvmesgtp7fso7lg4ivqo0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148296686083:android:1b8820623995b2118f4c36",
+        "android_client_info": {
+          "package_name": "com.morellana.turneroapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148296686083-fcliv3qbkhpvmesgtp7fso7lg4ivqo0f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4FwQhWJ8fHHQ5N4SD_9OWouO68aMNodI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148296686083-fcliv3qbkhpvmesgtp7fso7lg4ivqo0f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
