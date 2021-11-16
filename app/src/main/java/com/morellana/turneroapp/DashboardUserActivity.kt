@@ -14,7 +14,7 @@ import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
 
 class DashboardUserActivity : AppCompatActivity(){
-    lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef : DatabaseReference
     lateinit var doctorCardsRecyclerView: RecyclerView
     lateinit var specialitiesRecyclerView: RecyclerView
     lateinit var availableRecyclerView: RecyclerView
