@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MenuItem
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.*
 import com.morellana.turneroapp.adapters.DoctorCardAdapter
 import com.morellana.turneroapp.adapters.OnlineDoctorsAdapter
@@ -15,16 +19,12 @@ import com.morellana.turneroapp.databinding.ActivityDashboardUserBinding
 import com.morellana.turneroapp.dataclass.OnlineDoctor
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
+import com.morellana.turneroapp.ui.OnlineDoctorFragment
+import com.morellana.turneroapp.ui.ProfessionalFragment
+import com.morellana.turneroapp.ui.SpecialistFragment
 
 class DashboardUserActivity : AppCompatActivity(){
-    private lateinit var dbRef : DatabaseReference
-    lateinit var doctorCardsRecyclerView: RecyclerView
-    lateinit var specialitiesRecyclerView: RecyclerView
-    lateinit var availableRecyclerView: RecyclerView
-    lateinit var professionalArrayList: ArrayList<Profesional>
-    lateinit var specialitiesArrayList: ArrayList<Speciality>
-    lateinit var onlineArrayList: ArrayList<OnlineDoctor>
-    lateinit var adapter: DoctorCardAdapter
+
     private lateinit var binding: ActivityDashboardUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,29 +33,13 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.frag, ProfessionalFragment())
+        transaction.commit()
+
         navBar()
 
-        //doctorCardsRecyclerView = findViewById(R.id.recycler_dr_cards)
-        //doctorCardsRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //doctorCardsRecyclerView.setHasFixedSize(true)
-
-        //specialitiesRecyclerView = findViewById(R.id.specialitiesRecyclerView)
-        //specialitiesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //specialitiesRecyclerView.setHasFixedSize(true)
-
-        //availableRecyclerView = findViewById(R.id.available_doctor_recycler)
-        //availableRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //specialitiesRecyclerView.setHasFixedSize(true)
-
-
-        //specialitiesArrayList = arrayListOf<Speciality>()
-        //professionalArrayList = arrayListOf<Profesional>()
-        // onlineArrayList = arrayListOf<OnlineDoctor>()
-
-        //getProfesionalData()
-        //getSpecialityData()
-        //getAvailableDoctor()
-
+        bottomNav()
 
     }
 
@@ -83,57 +67,25 @@ class DashboardUserActivity : AppCompatActivity(){
         return super.onOptionsItemSelected(item)
     }
 
-    private fun getProfesionalData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("users/professionals")
-        dbRef.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (professionalSnapshot in snapshot.children){
-                        val professionals = professionalSnapshot.getValue(Profesional::class.java)
-                        professionalArrayList.add(professionals!!)
-                    }
-                    doctorCardsRecyclerView.adapter = DoctorCardAdapter(professionalArrayList)
+    private fun bottomNav(){
+        val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.categ -> {fragSelect(ProfessionalFragment())
+                    Toast.makeText(this, "Categorias", Toast.LENGTH_LONG).show()}
+                R.id.now -> {fragSelect(OnlineDoctorFragment())
+                    Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show()}
+                R.id.esp -> {fragSelect(SpecialistFragment())
+                    Toast.makeText(this, "Especialistas", Toast.LENGTH_LONG).show()}
                 }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+                true
+        }
     }
-    private fun getSpecialityData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("specialities")
-        dbRef.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (specialitySnapshot in snapshot.children){
-                        val specialities = specialitySnapshot.getValue(Speciality::class.java)
-                        specialitiesArrayList.add(specialities!!)
-                    }
-                    specialitiesRecyclerView.adapter = SpecialityCardAdapter(specialitiesArrayList)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
 
-            }
-        })
-    }
-    private fun getAvailableDoctor() {
-        dbRef = FirebaseDatabase.getInstance().getReference("online")
-        dbRef.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (onlineSnapshot in snapshot.children){
-                        val online = onlineSnapshot.getValue(OnlineDoctor::class.java)
-                        if (online != null) {
-                            onlineArrayList.add(online)
-                        }
-                    }
-                    availableRecyclerView.adapter = OnlineDoctorsAdapter(onlineArrayList)
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
+    private fun fragSelect(frag: Fragment) {
+        val id: Int = (R.id.frag)
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(id, frag)
+        transaction.commit()
     }
 }
