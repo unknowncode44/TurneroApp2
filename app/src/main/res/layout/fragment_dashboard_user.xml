@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    tools:context=".ui.DashboardUserFragment"
+    android:layout_marginTop="10dp"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/rubik_regular"
+        android:paddingHorizontal="10dp"
+        android:text="@string/find_esp"
+        android:textColor="@color/Black"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias="0"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/White"
+        android:elevation="0dp"
+        android:outlineAmbientShadowColor="@color/White"
+        android:outlineSpotShadowColor="@color/White"
+        android:src="@drawable/ic_search_24_black"
+        app:borderWidth="0dp"
+        app:layout_constraintStart_toEndOf="@+id/text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintHorizontal_bias=".9"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_dr_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias=".01">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_semi_bold"
+        android:text="Categorias"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_dr_cards"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".02"
+        app:layout_constraintHorizontal_bias=".04"/>
+
+    <TextView
+        android:id="@+id/see_all_cat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_regular"
+        android:text="Ver Todas"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/text2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_dr_cards"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".02"
+        app:layout_constraintHorizontal_bias=".6"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/specialitiesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".02"/>
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_semi_bold"
+        android:text="Atendiendo ahora"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/specialitiesRecyclerView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".04"
+        app:layout_constraintVertical_bias=".02"/>
+
+    <TextView
+        android:id="@+id/professional_cards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_regular"
+        android:text="Ver Todos"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/text3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/specialitiesRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias=".02"
+        app:layout_constraintHorizontal_bias=".6"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/available_doctor_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintTop_toBottomOf="@id/text3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias=".02"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

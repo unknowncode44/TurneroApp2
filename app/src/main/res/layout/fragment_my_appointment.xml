@@ -4,25 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.ProfessionalFragment">
+    tools:context=".ui.MyAppointmentFragment"
+    android:fitsSystemWindows="true"
+    android:layout_marginTop="10dp">
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/categ"
+        android:text="@string/myappointment"
+        android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/recycler_dr_cards"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:paddingBottom="30dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/recycler_dr_cards"
-        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <include layout="@layout/my_appointment_card"/>
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,4 +40,6 @@
     <string name="categ">Categorias</string>
     <string name="now">Atendiendo ahora</string>
     <string name="esp2">Especialistas</string>
+    <string name="find_esp">Encuentra tu \nEspecialista</string>
+    <string name="myappointment">Mis Turnos</string>
 </resources>
