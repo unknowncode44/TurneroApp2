@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="20dp"
     android:elevation="10dp"
@@ -13,154 +13,166 @@
     android:layout_marginBottom="10dp"
     android:fitsSystemWindows="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/date"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fecha"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.059" />
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/date2"
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textColor="@color/Gray"
+                    android:fontFamily="@font/rubik_light"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="27/11/2021"
+                    android:textColor="@color/Black"
+                    android:fontFamily="@font/rubik_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hora"
+                    android:textColor="@color/Gray"
+                    android:fontFamily="@font/rubik_light"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20:30 PM"
+                    android:textColor="@color/Black"
+                    android:fontFamily="@font/rubik_light"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="27/11/2021"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date"
-            app:layout_constraintVertical_bias="0.06" />
+            android:layout_gravity="center">
 
-        <TextView
-            android:id="@+id/type"
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tipo"
+                    android:textColor="@color/Gray"
+                    android:fontFamily="@font/rubik_light"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dentista"
+                    android:textColor="@color/Black"
+                    android:fontFamily="@font/rubik_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Doctor"
+                    android:textColor="@color/Gray"
+                    android:fontFamily="@font/rubik_light"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dr. Matias Orellana"
+                    android:textColor="@color/Black"
+                    android:fontFamily="@font/rubik_light"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tipo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date2"
-            app:layout_constraintVertical_bias="0.044" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dentista"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/type"
-            app:layout_constraintVertical_bias="0.084" />
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hora"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.419"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.059" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lugar"
+                    android:textColor="@color/Gray"
+                    android:fontFamily="@font/rubik_light"/>
 
-        <TextView
-            android:id="@+id/time2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8:00AM"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.446"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time"
-            app:layout_constraintVertical_bias="0.057" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Policlinico Modelo"
+                    android:textColor="@color/Black"
+                    android:fontFamily="@font/rubik_light"/>
 
-        <TextView
-            android:id="@+id/place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lugar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.424"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time2"
-            app:layout_constraintVertical_bias="0.056" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Policlinico modelo"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.565"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place"
-            app:layout_constraintVertical_bias="0.071" />
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="111dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="142dp"
-            android:text="Doctor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.726"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/Red"
+                    android:text="Cancelar turno"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/rubik_light"/>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="1dp"
-            android:text="Matias Orellana"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.962"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            app:layout_constraintVertical_bias="0.049" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="317dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="126dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="171dp"
-            android:text="Cancelar Turno"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.875" />
+        </LinearLayout>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0"
-        android:paddingBottom="30dp"/>
+        android:paddingBottom="30dp"
+        android:fontFamily="@font/rubik_light"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -28,8 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <include layout="@layout/my_appointment_card"/>
 
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
