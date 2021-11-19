@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.morellana.turneroapp.databinding.ActivityDashboardUserBinding
 import com.morellana.turneroapp.ui.DashboardUserFragment
+import com.morellana.turneroapp.ui.MyAppointmentFragment
 
 class DashboardUserActivity : AppCompatActivity(){
 
@@ -31,7 +32,8 @@ class DashboardUserActivity : AppCompatActivity(){
             when(item.itemId) {
                 R.id.categ -> {fragSelect(DashboardUserFragment())
                     Toast.makeText(this, "Categorias", Toast.LENGTH_LONG).show()}
-                R.id.now -> { Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show() }
+                R.id.myAppointment -> { fragSelect(MyAppointmentFragment())
+                    Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show() }
                 R.id.esp -> { Toast.makeText(this, "Especialistas", Toast.LENGTH_LONG).show() }
                 }
                 true

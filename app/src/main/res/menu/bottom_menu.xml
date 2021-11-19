@@ -4,11 +4,11 @@
         android:title="@string/categ"
         android:icon="@drawable/category_menu"/>
 
-    <item android:id="@+id/now"
-        android:title="@string/now"
-        android:icon="@drawable/especialist"/>
+    <item android:id="@+id/myAppointment"
+        android:title="@string/myappointment"
+        android:icon="@drawable/my_appointment"/>
 
     <item android:id="@+id/esp"
         android:title="@string/esp2"
-        android:icon="@drawable/especialist"/>
+        android:icon="@drawable/my_appointment"/>
 </menu>
