@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         //manejar cuando tocan el boton de registro
         binding.loginBtn.setOnClickListener{
             startActivity(Intent(this, SignInActivity::class.java))
+            this.overridePendingTransition(R.anim.enter, R.anim.leave)
         }
 
     }

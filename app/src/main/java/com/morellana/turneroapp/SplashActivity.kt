@@ -24,6 +24,7 @@ class SplashActivity : AppCompatActivity() {
         else {
             startActivity(Intent(this, DashboardUserActivity::class.java))
             finish()
+            this.overridePendingTransition(R.anim.enter, R.anim.leave)
         }
 
 

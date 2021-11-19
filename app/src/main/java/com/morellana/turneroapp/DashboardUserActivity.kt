@@ -43,6 +43,7 @@ class DashboardUserActivity : AppCompatActivity(){
     private fun fragSelect(frag: Fragment) {
         val id: Int = (R.id.frag)
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.enter, R.anim.leave)
         transaction.replace(id, frag)
         transaction.commit()
     }
