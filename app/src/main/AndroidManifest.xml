@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Turnero"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".SearchDoctor"
+            android:exported="true" />
+        <activity
             android:name=".SignInActivity"
             android:exported="true" />
         <activity

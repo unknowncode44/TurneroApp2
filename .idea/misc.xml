@@ -4,9 +4,25 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable-anydpi/nav_icon.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/edit_text_shape.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_area.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_input_email.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_lock_input.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_person.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_person_36_white.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/ic_search_24_black.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/shape_button01.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/shape_button02.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/shape_edit_text01.xml" value="0.165234375" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/drawable/shape_toolbar01.xml" value="0.165234375" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/font-v26/rubik_font_family.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_dashboard_user.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_search_doctor.xml" value="0.25" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_sign_in.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/available_doctor_card.xml" value="0.20416666666666666" />
@@ -17,6 +33,7 @@
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_my_appointment.xml" value="0.153125" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_online_doctor.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_professional.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_search_doctor.xml" value="0.153125" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_specialist.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_tab_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_tab_register.xml" value="0.19010416666666666" />

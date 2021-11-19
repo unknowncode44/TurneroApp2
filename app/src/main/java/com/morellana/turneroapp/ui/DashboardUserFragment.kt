@@ -1,14 +1,18 @@
 package com.morellana.turneroapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import com.morellana.turneroapp.R
+import com.morellana.turneroapp.SearchDoctor
 import com.morellana.turneroapp.adapters.DoctorCardAdapter
 import com.morellana.turneroapp.adapters.OnlineDoctorsAdapter
 import com.morellana.turneroapp.adapters.SpecialityCardAdapter
@@ -32,6 +36,14 @@ class DashboardUserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard_user, container, false)
+
+        val search: FloatingActionButton = view.findViewById(R.id.search)
+
+        search.setOnClickListener {
+            val searchIntent = Intent(context, SearchDoctor::class.java)
+            startActivity(searchIntent)
+            activity?.overridePendingTransition(R.anim.enter, R.anim.leave)
+        }
 
         doctorCardsRecyclerView = view.findViewById(R.id.recycler_dr_cards)
         doctorCardsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
