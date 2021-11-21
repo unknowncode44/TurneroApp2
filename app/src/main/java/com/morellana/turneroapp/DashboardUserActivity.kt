@@ -30,7 +30,7 @@ class DashboardUserActivity : AppCompatActivity(){
         val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.categ -> {fragSelect(DashboardUserFragment())
+                R.id.home_page -> {fragSelect(DashboardUserFragment())
                     Toast.makeText(this, "Categorias", Toast.LENGTH_LONG).show()}
                 R.id.myAppointment -> { fragSelect(MyAppointmentFragment())
                     Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show() }

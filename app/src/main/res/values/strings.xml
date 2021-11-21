@@ -37,9 +37,10 @@
     <string name="myesp">Mis especialistas</string>
     <string name="contac">Contactenos</string>
     <string name="signout">Cerrar sesión</string>
-    <string name="categ">Categorias</string>
+    <string name="home">Inicio</string>
     <string name="now">Atendiendo ahora</string>
     <string name="esp2">Especialistas</string>
-    <string name="find_esp">Encuentra tu \nEspecialista</string>
-    <string name="myappointment">Mis Turnos</string>
+    <string name="find_esp">Encuentra tu</string>
+    <string name="find_esp_name">Especialista</string>
+    <string name="myAppointments">Mis Turnos</string>
 </resources>

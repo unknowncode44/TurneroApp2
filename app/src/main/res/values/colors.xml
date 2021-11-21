@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources>\
+    <color name="shimmerBackground">#dddddd</color>
     <color name="Fab_google"> #f3f3f3</color>
     <color name="Primary"> #7cdbe3</color>
     <color name="SecondaryTwo">#d989d4</color>
