@@ -44,6 +44,13 @@ class DashboardUserFragment : Fragment() {
             activity?.overridePendingTransition(R.anim.enter, R.anim.leave)
         }
 
+        val addAppointment: FloatingActionButton = view.findViewById(R.id.add)
+
+
+        addAppointment.setOnClickListener {
+            fragSelect(NewAppointment())
+        }
+
         doctorCardsRecyclerView = view.findViewById(R.id.recycler_dr_cards)
         doctorCardsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         doctorCardsRecyclerView.setHasFixedSize(true)
@@ -118,5 +125,13 @@ class DashboardUserFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    private fun fragSelect(frag: Fragment) {
+        val id: Int = (R.id.frag)
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.setCustomAnimations(R.anim.enter, R.anim.leave)
+        transaction?.replace(id, frag)
+        transaction?.commit()
     }
 }
