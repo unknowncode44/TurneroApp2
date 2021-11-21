@@ -23,8 +23,10 @@
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/menu/bottom_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/menu/menu.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/drawable/category_menu.xml" value="0.22447916666666667" />
+        <entry key="app/src/main/res/drawable/nav_icons_style.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/drawable/shape_button_cancel.xml" value="0.14166666666666666" />
         <entry key="app/src/main/res/drawable/shape_toolbar02.xml" value="0.22447916666666667" />
+        <entry key="app/src/main/res/drawable/shape_toolbar04.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/layout/activity_dashboard_user.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_search_doctor.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/layout/available_doctor_card.xml" value="0.18611111111111112" />

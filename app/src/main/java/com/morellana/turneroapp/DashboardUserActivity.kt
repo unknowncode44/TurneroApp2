@@ -35,6 +35,7 @@ class DashboardUserActivity : AppCompatActivity(){
                 R.id.myAppointment -> { fragSelect(MyAppointmentFragment())
                     Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show() }
                 R.id.esp -> { Toast.makeText(this, "Especialistas", Toast.LENGTH_LONG).show() }
+                R.id.myAccount -> {Toast.makeText(this, "Mi cuenta", Toast.LENGTH_LONG).show()}
                 }
                 true
         }
