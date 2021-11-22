@@ -17,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         // obtenemos instancia de FirebaseAuth
         auth = FirebaseAuth.getInstance()
         // decimos que si current user esta vacio, el usuario no ha iniciado sesion, con lo cual lo mandamos la pagina de registro o login, usando la funcion debounce.
-        if (auth.currentUser != null){
+        if (auth.currentUser == null){
             debounce()
         }
         // si no es nulo, es decir que ya inicio sesion, por lo cual sus datos estan guardados, si ese es el caso lo mandamos a la pagina inicial.
