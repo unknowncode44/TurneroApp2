@@ -1,11 +1,14 @@
 package com.morellana.turneroapp.ui
 
+import android.R.attr
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import android.widget.*
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
@@ -14,6 +17,11 @@ import com.morellana.turneroapp.R
 import com.morellana.turneroapp.databinding.FragmentNewAppointmentBinding
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
+import android.view.animation.LayoutAnimationController
+
+import android.R.attr.animation
+import android.view.animation.AnimationSet
+
 
 class NewAppointment : Fragment() {
     private var _binding: FragmentNewAppointmentBinding? = null
@@ -49,7 +57,17 @@ class NewAppointment : Fragment() {
         autocompleteSpeciality.setOnItemClickListener { adapterView, view, i, l -> //seteamos un click listener para encontrar el valor seleccionado
             val value: String = specialityArrayName[i].toString().lowercase() // con la posicion del array lo buscamos y lo pasamos
             binding.autoCompleteDoctor.setText("")
-            binding.container2.visibility = View.VISIBLE
+            if(binding.container2.visibility == View.GONE){
+                binding.container2.visibility = View.VISIBLE
+                val animation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, -0.1f, Animation.RELATIVE_TO_SELF, 0f)
+                animation.duration = 500
+                val set = AnimationSet(true)
+                set.addAnimation(animation)
+                val controller = LayoutAnimationController(set, 0.25f)
+                binding.container2.layoutAnimation = controller
+                binding.container2.startAnimation(animation)
+            }
+
 
             getProfessionalUid(value)  // corremos funcion para llenar el array de profesionales y mostramos el mismo input
 
