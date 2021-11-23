@@ -19,9 +19,7 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.frag, DashboardUserFragment())
-        transaction.commit()
+        fragSelect(DashboardUserFragment())
 
         bottomNav()
 
@@ -47,5 +45,17 @@ class DashboardUserActivity : AppCompatActivity(){
         transaction.setCustomAnimations(R.anim.enter, R.anim.leave)
         transaction.replace(id, frag)
         transaction.commit()
+    }
+
+    //anulamos el backPressed para volver a la actividad entre fragments
+    override fun onBackPressed() {
+        val count: Int = supportFragmentManager.backStackEntryCount
+
+        if (count == 0){
+            super.onBackPressed()
+            supportFragmentManager.popBackStack()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
     }
 }

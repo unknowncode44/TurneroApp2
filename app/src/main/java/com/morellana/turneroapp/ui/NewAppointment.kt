@@ -7,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.R
-import com.morellana.turneroapp.adapters.SpecialityCardAdapter
 import com.morellana.turneroapp.databinding.FragmentNewAppointmentBinding
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
@@ -28,12 +25,6 @@ class NewAppointment : Fragment() {
     lateinit var profRef: DatabaseReference
     lateinit var specialityInput: TextInputLayout
     lateinit var autocompleteSpeciality: AutoCompleteTextView
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,22 +45,23 @@ class NewAppointment : Fragment() {
         autocompleteSpeciality = binding.autoCompleteSpeciality
         autocompleteSpeciality.setAdapter(arrayAdapter)
 
+
         autocompleteSpeciality.setOnItemClickListener { adapterView, view, i, l -> //seteamos un click listener para encontrar el valor seleccionado
             val value: String = specialityArrayName[i].toString().lowercase() // con la posicion del array lo buscamos y lo pasamos
-
+            binding.autoCompleteDoctor.setText("")
+            binding.container2.visibility = View.VISIBLE
 
             getProfessionalUid(value)  // corremos funcion para llenar el array de profesionales y mostramos el mismo input
 
-//            Toast.makeText(context, value, Toast.LENGTH_SHORT).show()
+            val arrayAdapter2 = ArrayAdapter(requireContext(), R.layout.dropdown_item, professionalArrayName)
+            binding.autoCompleteDoctor.setAdapter(arrayAdapter2)
+            binding.autoCompleteDoctor.setOnItemClickListener { adapterView, view, i, l ->
+
+            }
+
         }
 
-
         return binding.root
-    }
-
-    override fun onDestroyView() {
-     super.onDestroyView()
-     _binding = null
     }
 
     private fun getProfessionalUid(speciality:String) {
@@ -128,9 +120,5 @@ class NewAppointment : Fragment() {
             }
         })
     }
-
-
-
-
 
 }
