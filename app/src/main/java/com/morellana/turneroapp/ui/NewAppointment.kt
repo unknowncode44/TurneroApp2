@@ -63,7 +63,7 @@ class NewAppointment : Fragment() {
 
         return binding.root
     }
-
+    //
     private fun getProfessionalUid(speciality:String) {
         val path: String = "specialities/$speciality/professionals"
         dbRef = FirebaseDatabase.getInstance().getReference(path)
