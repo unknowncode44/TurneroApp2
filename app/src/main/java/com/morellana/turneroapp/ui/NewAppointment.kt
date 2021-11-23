@@ -31,6 +31,7 @@ class NewAppointment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        //
         _binding = FragmentNewAppointmentBinding.inflate(inflater, container, false)
 
         getSpecialityData() // obtenemos array de especialidades
