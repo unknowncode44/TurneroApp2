@@ -134,11 +134,13 @@ class DashboardUserFragment : Fragment() {
         })
     }
 
+    //agregando la extencion addToBackStack(null), al presionar back
+    //vuelve al fragmento anterior
     private fun fragSelect(frag: Fragment) {
         val id: Int = (R.id.frag)
         val transaction = fragmentManager?.beginTransaction()
         transaction?.setCustomAnimations(R.anim.enter, R.anim.leave)
-        transaction?.replace(id, frag)
+        transaction?.replace(id, frag)?.addToBackStack(null)
         transaction?.commit()
     }
 }
