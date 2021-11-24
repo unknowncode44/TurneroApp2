@@ -45,7 +45,7 @@ class MyAppointmentFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_my_appointment, container, false)
 
         mShimmerFrameLayout = view.findViewById(R.id.shimmerViewContainer)
-        mShimmerFrameLayout.startShimmerAnimation()
+        mShimmerFrameLayout.startShimmer()
 
         auth = FirebaseAuth.getInstance()
         currentUserUid = auth.currentUser!!.uid
@@ -62,10 +62,10 @@ class MyAppointmentFragment : Fragment() {
     }
     override fun onResume(){
         super.onResume();
-        mShimmerFrameLayout.startShimmerAnimation()
+        mShimmerFrameLayout.startShimmer()
     }
     override fun onPause(){
-        mShimmerFrameLayout.stopShimmerAnimation()
+        mShimmerFrameLayout.stopShimmer()
         super.onPause()
 
     }
@@ -80,7 +80,7 @@ class MyAppointmentFragment : Fragment() {
 
                         appointmentArrayList.add(appointments!!)
                     }
-                    mShimmerFrameLayout.stopShimmerAnimation();
+                    mShimmerFrameLayout.stopShimmer();
 
                     appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentArrayList)
                 }

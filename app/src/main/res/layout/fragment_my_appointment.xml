@@ -10,11 +10,12 @@
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerViewContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text">
+
         <include layout="@layout/data_placeholder_layout"/>
 
     </com.facebook.shimmer.ShimmerFrameLayout>

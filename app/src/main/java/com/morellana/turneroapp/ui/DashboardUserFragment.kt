@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SearchDoctor
@@ -19,9 +18,12 @@ import com.morellana.turneroapp.adapters.SpecialityCardAdapter
 import com.morellana.turneroapp.dataclass.OnlineDoctor
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
+import com.morellana.turneroapp.databinding.FragmentDashboardUserBinding
 
 class DashboardUserFragment : Fragment() {
 
+    private var _binding: FragmentDashboardUserBinding? = null
+    private val binding get() = _binding!!
     lateinit var dbRef : DatabaseReference
     lateinit var doctorCardsRecyclerView: RecyclerView
     lateinit var specialitiesRecyclerView: RecyclerView
@@ -43,39 +45,35 @@ class DashboardUserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_dashboard_user, container, false)
+        _binding = FragmentDashboardUserBinding.inflate(inflater, container, false)
 
-        val search: FloatingActionButton = view.findViewById(R.id.search)
+        //Comientza el efecto del shimmer
+        binding.shimmerRecyclerDrCards.startShimmer()
+        binding.shimmerAvailableDoctor.startShimmer()
+        binding.shimmerSpecialities.startShimmer()
 
-        search.setOnClickListener {
+        binding.search.setOnClickListener {
             val searchIntent = Intent(context, SearchDoctor::class.java)
             startActivity(searchIntent)
-            activity?.overridePendingTransition(R.anim.enter, R.anim.leave)
         }
 
-
-        val addAppointment: FloatingActionButton = view.findViewById(R.id.add)
-
-
-        addAppointment.setOnClickListener {
+        binding.add.setOnClickListener {
             fragSelect(NewAppointment())
         }
-        val manageAppointments: FloatingActionButton = view.findViewById(R.id.manage)
 
-
-        manageAppointments.setOnClickListener {
+        binding.manage.setOnClickListener {
             fragSelect(MakeAppointments())
         }
 
-        doctorCardsRecyclerView = view.findViewById(R.id.recycler_dr_cards)
+        doctorCardsRecyclerView = binding.recyclerDrCards
         doctorCardsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         doctorCardsRecyclerView.setHasFixedSize(true)
 
-        specialitiesRecyclerView = view.findViewById(R.id.specialitiesRecyclerView)
+        specialitiesRecyclerView = binding.specialitiesRecyclerView
         specialitiesRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         specialitiesRecyclerView.setHasFixedSize(true)
 
-        availableRecyclerView = view.findViewById(R.id.available_doctor_recycler)
+        availableRecyclerView = binding.availableDoctorRecycler
         availableRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         specialitiesRecyclerView.setHasFixedSize(true)
 
@@ -84,11 +82,12 @@ class DashboardUserFragment : Fragment() {
         professionalArrayList = arrayListOf<Profesional>()
         onlineArrayList = arrayListOf<OnlineDoctor>()
 
+
         getProfesionalData()
         getSpecialityData()
         getAvailableDoctor()
 
-        return view
+        return binding.root
     }
 
     private fun getProfesionalData() {
@@ -101,12 +100,15 @@ class DashboardUserFragment : Fragment() {
                         professionalArrayList.add(professionals!!)
                     }
                     doctorCardsRecyclerView.adapter = DoctorCardAdapter(professionalArrayList)
+                    binding.shimmerRecyclerDrCards.stopShimmer()
+                    binding.shimmerRecyclerDrCards.visibility = View.GONE
                 }
             }
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
+
     }
     private fun getSpecialityData() {
         dbRef = FirebaseDatabase.getInstance().getReference("specialities")
@@ -118,13 +120,17 @@ class DashboardUserFragment : Fragment() {
                         specialitiesArrayList.add(specialities!!)
                     }
                     specialitiesRecyclerView.adapter = SpecialityCardAdapter(specialitiesArrayList)
+                    binding.shimmerSpecialities.stopShimmer()
+                    binding.shimmerSpecialities.visibility = View.GONE
                 }
             }
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
+
     }
+
     private fun getAvailableDoctor() {
         dbRef = FirebaseDatabase.getInstance().getReference("online")
         dbRef.addValueEventListener(object: ValueEventListener {
@@ -135,7 +141,11 @@ class DashboardUserFragment : Fragment() {
                         onlineArrayList.add(online!!)
                     }
                     availableRecyclerView.adapter = OnlineDoctorsAdapter(onlineArrayList)
+                    binding.shimmerAvailableDoctor.stopShimmer()
+                    binding.shimmerAvailableDoctor.visibility = View.GONE
+
                 }
+
             }
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -150,5 +160,12 @@ class DashboardUserFragment : Fragment() {
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(id, frag)?.addToBackStack(null)
         transaction?.commit()
+    }
+
+    override fun onPause() {
+
+
+
+        super.onPause()
     }
 }

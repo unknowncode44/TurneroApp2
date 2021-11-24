@@ -54,7 +54,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     //facebook shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     implementation 'com.google.firebase:firebase-auth:21.0.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.2'
