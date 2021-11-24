@@ -42,20 +42,15 @@ class DashboardUserActivity : AppCompatActivity(){
     private fun fragSelect(frag: Fragment) {
         val id: Int = (R.id.frag)
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(R.anim.enter, R.anim.leave)
         transaction.replace(id, frag)
+        transaction.addToBackStack("Principal")
         transaction.commit()
     }
 
     //anulamos el backPressed para volver a la actividad entre fragments
     override fun onBackPressed() {
-        val count: Int = supportFragmentManager.backStackEntryCount
 
-        if (count == 0){
             super.onBackPressed()
-            supportFragmentManager.popBackStack()
-        } else {
-            supportFragmentManager.popBackStack()
-        }
+
     }
 }

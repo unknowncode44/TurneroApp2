@@ -2,6 +2,7 @@ package com.morellana.turneroapp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,14 @@ class DashboardUserFragment : Fragment() {
     lateinit var specialitiesArrayList: ArrayList<Speciality>
     lateinit var onlineArrayList: ArrayList<OnlineDoctor>
     lateinit var adapter: DoctorCardAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //lo que hacemos es animar el inflar y el desinflar
+        val inflater = TransitionInflater.from(requireContext())
+        enterTransition = inflater.inflateTransition(R.transition.slide_rigth)
+        exitTransition = inflater.inflateTransition(R.transition.slide_left)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,7 +148,6 @@ class DashboardUserFragment : Fragment() {
     private fun fragSelect(frag: Fragment) {
         val id: Int = (R.id.frag)
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.setCustomAnimations(R.anim.enter, R.anim.leave)
         transaction?.replace(id, frag)?.addToBackStack(null)
         transaction?.commit()
     }

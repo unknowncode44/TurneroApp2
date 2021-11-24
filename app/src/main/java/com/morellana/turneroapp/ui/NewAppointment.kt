@@ -1,20 +1,17 @@
 package com.morellana.turneroapp.ui
 
 import android.os.Bundle
-import android.util.Log
+import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.R
-import com.morellana.turneroapp.adapters.SpecialityCardAdapter
 import com.morellana.turneroapp.databinding.FragmentNewAppointmentBinding
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
@@ -36,7 +33,10 @@ class NewAppointment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //lo que hacemos es animar el inflar y el desinflar
+        val inflater = TransitionInflater.from(requireContext())
+        enterTransition = inflater.inflateTransition(R.transition.slide_rigth)
+        exitTransition = inflater.inflateTransition(R.transition.slide_left)
     }
 
     override fun onCreateView(
@@ -76,11 +76,6 @@ class NewAppointment : Fragment() {
 
 
         return binding.root
-    }
-
-    override fun onDestroyView() {
-     super.onDestroyView()
-     _binding = null
     }
 
     // funcion buscar professionales por UID, usa INNER JOIN
