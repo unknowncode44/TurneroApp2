@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.NewAppointment"
+    tools:context=".ui.MakeAppointments"
     android:fitsSystemWindows="true"
     android:layout_marginTop="10dp">
 
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:fontFamily="@font/rubik_regular"
-            android:text="@string/newAppointment"
+            android:text="@string/makeAppointment"
             android:textSize="28sp"
             android:textColor="@color/Black"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,110 +59,189 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="65dp"
+        android:paddingHorizontal="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        android:layout_marginTop="65dp"
-        android:paddingHorizontal="25dp">
+        app:layout_constraintTop_toBottomOf="@+id/divider">
 
         <LinearLayout
             android:id="@+id/speciality"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/container"
-            android:layout_marginTop="10dp">
+            app:layout_constraintTop_toTopOf="@+id/container">
+
+            <TextView
+                android:id="@+id/today_date_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingHorizontal="20dp"
+                android:text="Fecha"
+                android:textColor="@color/DimGray"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/today_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingHorizontal="20dp"
+                android:text="ddmmaaaa"
+                android:textColor="@color/DimGray"
+                android:textSize="18sp"/>
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:text="Especialidad"
-                android:textSize="20sp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/rubik_regular"
-                android:textStyle="bold"
-                android:textColor="@color/DimGray"/>
+                android:paddingHorizontal="20dp"
+                android:text="Especialidad"
+                android:textColor="@color/DimGray"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:id="@+id/newAppointmentSpeciality"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_shape"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/especialidad_hint"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:backgroundTint="@android:color/transparent"
-                android:background="@drawable/edit_text_shape"
-                app:hintTextColor="@color/Secondary"
-                android:hint="@string/especialidad_hint"
                 app:expandedHintEnabled="true"
-                >
+                app:hintTextColor="@color/Secondary">
+
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteSpeciality"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="none"
+                    android:layout_marginHorizontal="15dp"
                     android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@android:color/transparent"
+                    android:inputType="none"
 
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/professionalInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/speciality"
-            android:layout_marginTop="10dp">
+            app:layout_constraintTop_toBottomOf="@+id/speciality">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:text="Professional"
-                android:textSize="20sp"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/rubik_regular"
-                android:textStyle="bold"
-                android:textColor="@color/DimGray"/>
+                android:paddingHorizontal="20dp"
+                android:text="Professional"
+                android:textColor="@color/DimGray"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:id="@+id/newAppointmentProfessional"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/edit_text_shape"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/professional_hint"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
                 app:boxCornerRadiusTopEnd="20dp"
                 app:boxCornerRadiusTopStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:backgroundTint="@android:color/transparent"
-                android:background="@drawable/edit_text_shape"
-                app:hintTextColor="@color/Secondary"
-                android:hint="@string/professional_hint"
                 app:expandedHintEnabled="true"
-                >
+                app:hintTextColor="@color/Secondary">
+
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteProfessional"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="none"
+                    android:layout_marginHorizontal="15dp"
                     android:layout_marginBottom="2dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@android:color/transparent"
+                    android:inputType="none"
 
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/professionalInput">
+
+            <CheckBox
+                android:id="@+id/checkbox_monday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lu" />
+
+            <CheckBox
+                android:id="@+id/checkbox_tuesday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ma" />
+            <CheckBox
+                android:id="@+id/checkbox_wednesday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mi" />
+            <CheckBox
+                android:id="@+id/checkbox_thursday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ju" />
+            <CheckBox
+                android:id="@+id/checkbox_friday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vi" />
+            <CheckBox
+                android:id="@+id/checkbox_saturday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sa" />
+            <CheckBox
+                android:id="@+id/checkbox_sunday"
+                android:labelFor="@+id/checkbox_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Do" />
         </LinearLayout>
 
 

@@ -44,11 +44,18 @@ class DashboardUserFragment : Fragment() {
             activity?.overridePendingTransition(R.anim.enter, R.anim.leave)
         }
 
+
         val addAppointment: FloatingActionButton = view.findViewById(R.id.add)
 
 
         addAppointment.setOnClickListener {
             fragSelect(NewAppointment())
+        }
+        val manageAppointments: FloatingActionButton = view.findViewById(R.id.manage)
+
+
+        manageAppointments.setOnClickListener {
+            fragSelect(MakeAppointments())
         }
 
         doctorCardsRecyclerView = view.findViewById(R.id.recycler_dr_cards)

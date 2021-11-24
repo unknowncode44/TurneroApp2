@@ -44,6 +44,8 @@
     <string name="find_esp_name">Especialista</string>
     <string name="myAppointments">Mis Turnos</string>
     <string name="newAppointment">Nuevo Turno</string>
+    <string name="makeAppointment">Crear Turnos</string>
     <string name="seleccionar_especialidad">Seleccionar Especialidad</string>
     <string name="especialidad_hint">Elige especialidad</string>
+    <string name="professional_hint">Elige Profesional</string>
 </resources>

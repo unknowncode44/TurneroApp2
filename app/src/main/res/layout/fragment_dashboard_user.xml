@@ -58,7 +58,7 @@
             >
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/add"
-                android:layout_marginStart="130dp"
+                android:layout_marginStart="100dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/White"
@@ -66,6 +66,19 @@
                 android:outlineAmbientShadowColor="@color/White"
                 android:outlineSpotShadowColor="@color/White"
                 android:src="@drawable/ic_baseline_add_24"
+                app:borderWidth="0dp"
+                tools:targetApi="p" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/manage"
+                android:layout_marginStart="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/White"
+                android:elevation="0dp"
+                android:outlineAmbientShadowColor="@color/White"
+                android:outlineSpotShadowColor="@color/White"
+                android:src="@drawable/ic_outline_calendar_today_24"
                 app:borderWidth="0dp"
                 tools:targetApi="p" />
 

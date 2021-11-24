@@ -1,27 +1,25 @@
 package com.morellana.turneroapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.R
-import com.morellana.turneroapp.adapters.SpecialityCardAdapter
-import com.morellana.turneroapp.databinding.FragmentNewAppointmentBinding
+import com.morellana.turneroapp.databinding.FragmentMakeAppointmentsBinding
 import com.morellana.turneroapp.dataclass.Profesional
 import com.morellana.turneroapp.dataclass.Speciality
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class NewAppointment : Fragment() {
-    // variables de trabajo
-    private var _binding: FragmentNewAppointmentBinding? = null
+class MakeAppointments : Fragment() {
+    //variables de trabajo
+    private var _binding: FragmentMakeAppointmentsBinding? = null
     private val binding get() = _binding!!
     lateinit var specialityArray: ArrayList<Speciality>
     lateinit var specialityArrayName: ArrayList<String?>
@@ -32,18 +30,30 @@ class NewAppointment : Fragment() {
     private lateinit var autocompleteSpeciality: AutoCompleteTextView
     private lateinit var autocompleteProfessional: AutoCompleteTextView
     lateinit var layoutProfessionalInput: LinearLayout
+    lateinit var currentDate: LocalDateTime
+    lateinit var dateTextView: TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentNewAppointmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMakeAppointmentsBinding.inflate(inflater, container, false)
+
+        // obtenemos la fecha de hoy
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+        currentDate = LocalDateTime.now()
+        val currentDateTime: String = dateTimeFormatter.format(currentDate).toString()
+
+        dateTextView = binding.todayDate
+
+        dateTextView.text = currentDateTime
+
 
         // escondemos contenedor de profesionales
         layoutProfessionalInput = binding.professionalInput
@@ -79,15 +89,15 @@ class NewAppointment : Fragment() {
     }
 
     override fun onDestroyView() {
-     super.onDestroyView()
-     _binding = null
+        super.onDestroyView()
+        _binding = null
     }
 
     // funcion buscar professionales por UID, usa INNER JOIN
     private fun getProfessionalUid(speciality:String) {  // pasamos la especialidad en la cual queremos encontrar professionales
         val path: String = "specialities/$speciality/professionals" // creamos el path
         dbRef = FirebaseDatabase.getInstance().getReference(path) // creamos la instancia con ese path
-        dbRef.addValueEventListener(object: ValueEventListener{
+        dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) { //hacemos snapshot a los professionales de esa especialidad
                 if (snapshot.exists()){
                     for (uidSnapshot in snapshot.children){ // en este bucle:
@@ -137,11 +147,6 @@ class NewAppointment : Fragment() {
             }
         })
     }
-
-
-
-
-
 
 
 }
