@@ -19,22 +19,16 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
+        //("para no destruir los fragments, usar la opcion hide() show()")
         val transaction = supportFragmentManager.beginTransaction()
         deleteFrag()
         transaction
-            .add(R.id.frag3, MyAppointmentFragment())
+            .add(R.id.frag, MyAppointmentFragment()).hide(MyAppointmentFragment())
+            .add(R.id.frag, DashboardUserFragment()).hide(DashboardUserFragment())
+            .add(R.id.frag, MyAccountFragment()).hide(MyAccountFragment())
             .commit()
 
-        deleteFrag()
-        transaction
-            .add(R.id.frag, DashboardUserFragment())
-            .commit()
-
-        deleteFrag()
-        transaction
-            .add(R.id.frag, MyAccountFragment())
-            .commit()
-
+        fragSelect(DashboardUserFragment(), MyAppointmentFragment(), MyAccountFragment())
 
         bottomNav()
 
@@ -48,20 +42,20 @@ class DashboardUserActivity : AppCompatActivity(){
             when(item.itemId) {
                 R.id.home_page -> {
                     if (open != "a"){
-                        fragSelect(DashboardUserFragment())
+                        fragSelect(DashboardUserFragment(), MyAppointmentFragment(), MyAccountFragment())
                         open = "a"
                     }
                 }
                 R.id.myAppointment -> {
                     if (open != "b"){
-                        fragSelect(MyAppointmentFragment())
+                        fragSelect(MyAppointmentFragment(), DashboardUserFragment(), MyAccountFragment())
                         open = "b"
                     }
                 }
                 R.id.esp -> {  }
                 R.id.myAccount -> {
                     if (open != "c"){
-                        fragSelect(MyAccountFragment())
+                        fragSelect(MyAccountFragment(), MyAppointmentFragment(), DashboardUserFragment())
                         open = "c"
                     }
                 }
@@ -70,11 +64,12 @@ class DashboardUserActivity : AppCompatActivity(){
         }
     }
 
-    private fun fragSelect(fragClass: Fragment) {
+    private fun fragSelect(fragShow: Fragment, fragHide: Fragment, fragHide2: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-            deleteFrag()
             transaction
-                .add(R.id.frag, fragClass)
+                .hide(fragHide)
+                .hide(fragHide2)
+                .show(fragShow)
                 .commit()
 
     }

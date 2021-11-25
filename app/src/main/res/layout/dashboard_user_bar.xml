@@ -19,28 +19,6 @@
         android:fitsSystemWindows="true"
         />
 
-    <FrameLayout
-        android:id="@+id/frag2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        android:translationX="500dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomnav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/frag3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        android:translationX="-500dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomnav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnav"
         app:menu="@menu/bottom_menu"
