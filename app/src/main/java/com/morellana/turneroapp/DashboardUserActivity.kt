@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.morellana.turneroapp.databinding.ActivityDashboardUserBinding
 import com.morellana.turneroapp.ui.DashboardUserFragment
+import com.morellana.turneroapp.ui.MyAccountFragment
 import com.morellana.turneroapp.ui.MyAppointmentFragment
 
 class DashboardUserActivity : AppCompatActivity(){
@@ -18,7 +19,22 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
-        fragSelect(DashboardUserFragment())
+        val transaction = supportFragmentManager.beginTransaction()
+        deleteFrag()
+        transaction
+            .add(R.id.frag3, MyAppointmentFragment())
+            .commit()
+
+        deleteFrag()
+        transaction
+            .add(R.id.frag, DashboardUserFragment())
+            .commit()
+
+        deleteFrag()
+        transaction
+            .add(R.id.frag, MyAccountFragment())
+            .commit()
+
 
         bottomNav()
 
@@ -26,30 +42,41 @@ class DashboardUserActivity : AppCompatActivity(){
 
     private fun bottomNav(){
         val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+        var open = ""
+        bottomNavigationView.setOnItemSelectedListener { item ->
+
             when(item.itemId) {
-                R.id.home_page -> {fragSelect(DashboardUserFragment())}
-                R.id.myAppointment -> { fragSelect(MyAppointmentFragment())}
-                R.id.esp -> {  }
-                R.id.myAccount -> {  }
+                R.id.home_page -> {
+                    if (open != "a"){
+                        fragSelect(DashboardUserFragment())
+                        open = "a"
+                    }
                 }
-                true
+                R.id.myAppointment -> {
+                    if (open != "b"){
+                        fragSelect(MyAppointmentFragment())
+                        open = "b"
+                    }
+                }
+                R.id.esp -> {  }
+                R.id.myAccount -> {
+                    if (open != "c"){
+                        fragSelect(MyAccountFragment())
+                        open = "c"
+                    }
+                }
+            }
+            true
         }
     }
 
     private fun fragSelect(fragClass: Fragment) {
-        val frag = supportFragmentManager.findFragmentById(R.id.frag)
         val transaction = supportFragmentManager.beginTransaction()
-        if (frag == null){
-            transaction
-                .add(R.id.frag, fragClass)
-                .commit()
-        } else {
             deleteFrag()
             transaction
                 .add(R.id.frag, fragClass)
                 .commit()
-        }
+
     }
 
     private fun deleteFrag(){

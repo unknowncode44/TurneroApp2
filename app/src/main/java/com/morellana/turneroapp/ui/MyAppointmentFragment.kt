@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.graphics.alpha
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +45,8 @@ class MyAppointmentFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.fragment_my_appointment, container, false)
 
+        val nullAppointment: LinearLayout = view.findViewById(R.id.nullAppointment)
+
         mShimmerFrameLayout = view.findViewById(R.id.shimmerViewContainer)
         mShimmerFrameLayout.startShimmer()
 
@@ -55,21 +58,17 @@ class MyAppointmentFragment : Fragment() {
         appointmentArrayList = arrayListOf<Appointment>()
 
 
-        getAppointmentData(currentUserUid)
+        getAppointmentData(currentUserUid, mShimmerFrameLayout)
 
+        if (appointmentRecyclerView.adapter?.itemCount == 0){
+            mShimmerFrameLayout.stopShimmer()
+            mShimmerFrameLayout.visibility = View.GONE
+            nullAppointment.visibility = View.VISIBLE
+        }
 
         return view
     }
-    override fun onResume(){
-        super.onResume();
-        mShimmerFrameLayout.startShimmer()
-    }
-    override fun onPause(){
-        mShimmerFrameLayout.stopShimmer()
-        super.onPause()
-
-    }
-    private fun getAppointmentData(uid: String) {
+    private fun getAppointmentData(uid: String, shimmer: ShimmerFrameLayout) {
         dbRef = FirebaseDatabase.getInstance().getReference("users/users/$uid/appointments")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -80,7 +79,8 @@ class MyAppointmentFragment : Fragment() {
 
                         appointmentArrayList.add(appointments!!)
                     }
-                    mShimmerFrameLayout.stopShimmer();
+                    shimmer.stopShimmer()
+                    shimmer.visibility = View.GONE
 
                     appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentArrayList)
                 }
