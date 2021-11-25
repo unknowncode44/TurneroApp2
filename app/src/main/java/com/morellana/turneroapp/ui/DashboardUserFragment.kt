@@ -47,10 +47,6 @@ class DashboardUserFragment : Fragment() {
     ): View? {
         _binding = FragmentDashboardUserBinding.inflate(inflater, container, false)
 
-        //Comientza el efecto del shimmer
-        binding.shimmerRecyclerDrCards.startShimmer()
-        binding.shimmerAvailableDoctor.startShimmer()
-        binding.shimmerSpecialities.startShimmer()
 
         binding.search.setOnClickListener {
             val searchIntent = Intent(context, SearchDoctor::class.java)
@@ -91,6 +87,7 @@ class DashboardUserFragment : Fragment() {
     }
 
     private fun getProfesionalData() {
+        binding.shimmerRecyclerDrCards.startShimmer()
         dbRef = FirebaseDatabase.getInstance().getReference("users/professionals")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -111,6 +108,7 @@ class DashboardUserFragment : Fragment() {
 
     }
     private fun getSpecialityData() {
+        binding.shimmerSpecialities.startShimmer()
         dbRef = FirebaseDatabase.getInstance().getReference("specialities")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -132,6 +130,7 @@ class DashboardUserFragment : Fragment() {
     }
 
     private fun getAvailableDoctor() {
+        binding.shimmerAvailableDoctor.startShimmer()
         dbRef = FirebaseDatabase.getInstance().getReference("online")
         dbRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -160,12 +159,5 @@ class DashboardUserFragment : Fragment() {
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(id, frag)?.addToBackStack(null)
         transaction?.commit()
-    }
-
-    override fun onPause() {
-
-
-
-        super.onPause()
     }
 }

@@ -2,7 +2,6 @@ package com.morellana.turneroapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.morellana.turneroapp.databinding.ActivityDashboardUserBinding
@@ -24,33 +23,42 @@ class DashboardUserActivity : AppCompatActivity(){
         bottomNav()
 
     }
+
     private fun bottomNav(){
         val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.home_page -> {fragSelect(DashboardUserFragment())
-                    Toast.makeText(this, "Categorias", Toast.LENGTH_LONG).show()}
-                R.id.myAppointment -> { fragSelect(MyAppointmentFragment())
-                    Toast.makeText(this, "En Linea", Toast.LENGTH_LONG).show() }
-                R.id.esp -> { Toast.makeText(this, "Especialistas", Toast.LENGTH_LONG).show() }
-                R.id.myAccount -> {Toast.makeText(this, "Mi cuenta", Toast.LENGTH_LONG).show()}
+                R.id.home_page -> {fragSelect(DashboardUserFragment())}
+                R.id.myAppointment -> { fragSelect(MyAppointmentFragment())}
+                R.id.esp -> {  }
+                R.id.myAccount -> {  }
                 }
                 true
         }
     }
 
-    private fun fragSelect(frag: Fragment) {
-        val id: Int = (R.id.frag)
+    private fun fragSelect(fragClass: Fragment) {
+        val frag = supportFragmentManager.findFragmentById(R.id.frag)
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(id, frag)
-        transaction.addToBackStack("Principal")
-        transaction.commit()
+        if (frag == null){
+            transaction
+                .add(R.id.frag, fragClass)
+                .commit()
+        } else {
+            deleteFrag()
+            transaction
+                .add(R.id.frag, fragClass)
+                .commit()
+        }
     }
 
-    //anulamos el backPressed para volver a la actividad entre fragments
-    override fun onBackPressed() {
-
-            super.onBackPressed()
-
+    private fun deleteFrag(){
+        val frag = supportFragmentManager.findFragmentById(R.id.frag)
+        val transaction = supportFragmentManager.beginTransaction()
+        if (frag != null) {
+            transaction
+                .remove(frag)
+                .commit()
+        }
     }
 }
