@@ -21,6 +21,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
             android:gravity="center"
             >
 
@@ -43,11 +45,11 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginVertical="2dp"
+                android:background="@color/shimmerBackground"
                 android:text="Especialidad"
                 android:textAlignment="center"
-                android:background="@color/shimmerBackground"
                 android:textColor="@color/shimmerBackground"
-                android:textSize="12dp" />
+                />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

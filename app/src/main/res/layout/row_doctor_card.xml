@@ -7,6 +7,7 @@
     android:layout_marginHorizontal="15dp"
     android:layout_height="200dp"
     app:cardCornerRadius="20dp"
+    android:layout_marginTop="5dp"
     app:cardElevation="5dp"
     android:backgroundTint="@color/Secondary"
     android:fitsSystemWindows="true">

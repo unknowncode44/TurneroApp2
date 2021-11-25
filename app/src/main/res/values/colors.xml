@@ -10,6 +10,7 @@
     <color name="RedAccent">#ff6f63</color>
     <color name="BorderGray">#737474</color>
     <color name="White">#FFFFFF</color>
+    <color name="Signalswhite">#f4f4f4</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
     <color name="Yellow">#FFFF00</color>

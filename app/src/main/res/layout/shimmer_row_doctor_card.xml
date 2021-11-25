@@ -7,6 +7,7 @@
     android:layout_marginHorizontal="15dp"
     android:layout_height="200dp"
     app:cardCornerRadius="20dp"
+    android:layout_marginTop="5dp"
     app:cardElevation="5dp"
     android:backgroundTint="@color/Secondary"
     android:fitsSystemWindows="true">
@@ -31,182 +32,70 @@
                 android:id="@+id/doctor_image"
                 android:layout_width="90dp"
                 android:layout_height="160dp"
-                android:background="@color/shimmerBackground"
+                android:background="@drawable/shimmer_background"
                 tools:ignore="ContentDescription">
             </ImageView>
         </LinearLayout>
 
         <!--  ## CAJA TEXTO ##-->
         <LinearLayout
+            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
+            android:paddingVertical="10dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/shimmerBackground"
             android:orientation="vertical">
 
             <!--  ## CAJA TITULO ##-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="210dp"
+                android:layout_height="25dp"
+                android:background="@drawable/shimmer_background"
                 android:layout_gravity="start"
                 android:orientation="horizontal"
-                android:paddingBottom="10dp">
+                android:paddingBottom="5dp">
                 <!--  ## DOCTOR NAME ##-->
-                <TextView
-                    android:id="@+id/doctor_name"
-                    android:layout_gravity="start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Roberto Aqueveque"
-                    android:fontFamily="@font/rubik_semi_bold"
-                    android:textSize="20sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
             </LinearLayout>
             <!--  ## CAJA ESPECIALIDAD ##-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="180dp"
+                android:layout_height="15dp"
                 android:layout_gravity="start"
-                android:orientation="horizontal"
-                >
-
-                <!--  ## MATRICULA PROF ##-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mat_prof_nro"
-                    android:fontFamily="@font/rubik_medium"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-
-                <!--  ## NUMERO MAT. PROF ##-->
-                <TextView
-                    android:id="@+id/mat_prof"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TU455662"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="5dp"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
+                android:background="@drawable/shimmer_background"
+                android:layout_marginBottom="5dp">
             </LinearLayout>
-
-            <!--  ## CAJA ESPECIALIDAD ##-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="180dp"
+                android:layout_height="15dp"
                 android:layout_gravity="start"
-                android:orientation="horizontal"
-                >
-
-                <!--  ## ESPECIALIDAD ##-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/especialidad"
-                    android:fontFamily="@font/rubik_medium"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-
-                <!--  ## ESPECIALIDAD ##-->
-                <TextView
-                    android:id="@+id/speciality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Neurocirujia"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="5dp"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
+                android:background="@drawable/shimmer_background"
+                android:layout_marginBottom="5dp">
             </LinearLayout>
-
-            <!--  ## CAJA DIAS SEMANA ##-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:orientation="horizontal"
-                >
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="180dp"
+            android:layout_height="15dp"
+            android:layout_gravity="start"
+            android:background="@drawable/shimmer_background"
+            >
+        </LinearLayout>
 
-                <!--  ## DIAS ATIENDE ##-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/atiende"
-                    android:fontFamily="@font/rubik_medium"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-
-                <!--  ## WEEK DAYS ##-->
-                <TextView
-                    android:id="@+id/ate_days"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Lu-Ma-Mi-Ju-Vi-Sa-Do"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="5dp"
-                    android:textSize="15sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-            </LinearLayout>
-
-            <!--  ## CAJA HORARIOS ##-->
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:orientation="horizontal"
-                >
-
-                <!--  ## HORARIOS ##-->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/horario"
-                    android:fontFamily="@font/rubik_medium"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-
-                <!--  ## HORA ##-->
-                <TextView
-                    android:id="@+id/ate_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="10Am - 14pm"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="5dp"
-                    android:textSize="16sp"
-                    android:background="@color/shimmerBackground"
-                    android:textColor="@color/shimmerBackground"/>
-            </LinearLayout>
-
-            <!--  ## CAJA BOTONES##-->
-            <LinearLayout
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
                 android:layout_gravity="start"
+                android:background="@drawable/shimmer_background"
                 android:orientation="horizontal">
 
-                <!--  ## BOTON MAS INFO ##-->
-                <Button
-                    android:layout_marginHorizontal="10dp"
-                    android:elevation="10dp"
-                    android:textSize="16sp"
-                    android:text="@string/mas_info"
-                    android:fontFamily="@font/rubik_semi_bold"
-                    android:textColor="@color/shimmerBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:backgroundTint="@color/shimmerBackground"
-                    style="?android:attr/buttonBarButtonStyle"
-                    tools:ignore="SmallSp" />
+
 
 
             </LinearLayout>
