@@ -20,8 +20,6 @@ import com.morellana.turneroapp.SplashActivity
 
 class MyAccountFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //lo que hacemos es animar el inflar y el desinflar
