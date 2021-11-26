@@ -48,4 +48,5 @@
     <string name="seleccionar_especialidad">Seleccionar Especialidad</string>
     <string name="especialidad_hint">Elige especialidad</string>
     <string name="professional_hint">Elige Profesional</string>
+    <string name="myAccount">Mis datos</string>
 </resources>

@@ -17,8 +17,12 @@ import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.DashboardUserActivity
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
+import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
 
 class MyAccountFragment : Fragment() {
+
+    private var _binding: FragmentMyAccountBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +37,17 @@ class MyAccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_my_account, container, false)
+        _binding =  FragmentMyAccountBinding.inflate(inflater, container, false)
 
+        binding.ok.translationX = -500f
+
+        binding.data.setOnClickListener {
+            binding.ok.animate().translationX(0f).setDuration(500).setStartDelay(300).start()
+            binding.data.text = "Volver"
+            binding.data.setOnClickListener {
+                binding.data.text = "Modificar Datos"
+            }
+        }
         val btn: Button = view.findViewById(R.id.boton)
         btn.setOnClickListener {
             logOut()
@@ -47,7 +60,7 @@ class MyAccountFragment : Fragment() {
             newPass(passText)
         }
 
-        return view
+        return binding.root
     }
 
     fun logOut(){
