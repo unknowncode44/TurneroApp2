@@ -82,8 +82,13 @@ class DashboardUserActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed() {
-        //Con esta linea, selecciona un item del bottom nav!!
-        //binding.main.bottomnav.selectedItemId = R.id.home_page
-        super.onBackPressed()
+        //El boton de atras vuelve a la pantalla principal
+        //Si se cumple la condicion, se cierra la app
+        if (binding.main.bottomnav.selectedItemId == R.id.home_page){
+            super.onBackPressed()
+        } else {
+            //Con esta linea, selecciona un item del bottom nav!!
+            binding.main.bottomnav.selectedItemId = R.id.home_page
+        }
     }
 }
