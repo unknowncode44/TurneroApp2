@@ -21,6 +21,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnav"
+        android:animateLayoutChanges="true"
         app:menu="@menu/bottom_menu"
         android:layout_width="match_parent"
         app:itemIconTint="@drawable/nav_icons_style"

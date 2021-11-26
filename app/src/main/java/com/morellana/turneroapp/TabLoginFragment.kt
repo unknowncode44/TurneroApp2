@@ -105,6 +105,7 @@ class TabLoginFragment : Fragment() {
                     // ## Navegamos a la pagina de inicio
                     val intent_ = Intent(context, DashboardUserActivity::class.java)
                     startActivity(intent_)
+                    activity?.finish()
                     activity?.overridePendingTransition(R.anim.enter, R.anim.leave)
                 } else {
                     val errorMessage = Objects.requireNonNull(task.exception)?.localizedMessage

@@ -60,4 +60,9 @@ class SignInActivity : AppCompatActivity() {
             }
         })
     }
+
+    override fun onStop() {
+        finish()
+        super.onStop()
+    }
 }

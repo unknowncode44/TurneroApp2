@@ -19,16 +19,10 @@ class DashboardUserActivity : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
-        //("para no destruir los fragments, usar la opcion hide() show()")
         val transaction = supportFragmentManager.beginTransaction()
-        deleteFrag()
         transaction
-            .add(R.id.frag, MyAppointmentFragment()).hide(MyAppointmentFragment())
-            .add(R.id.frag, DashboardUserFragment()).hide(DashboardUserFragment())
-            .add(R.id.frag, MyAccountFragment()).hide(MyAccountFragment())
+            .add(R.id.frag, DashboardUserFragment())
             .commit()
-
-        fragSelect(DashboardUserFragment(), MyAppointmentFragment(), MyAccountFragment())
 
         bottomNav()
 
@@ -36,26 +30,27 @@ class DashboardUserActivity : AppCompatActivity(){
 
     private fun bottomNav(){
         val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
+        //Recurri a algo basico, no sabia como controlar la doble seleccion de los botones de navegacion :P
         var open = ""
         bottomNavigationView.setOnItemSelectedListener { item ->
 
             when(item.itemId) {
                 R.id.home_page -> {
                     if (open != "a"){
-                        fragSelect(DashboardUserFragment(), MyAppointmentFragment(), MyAccountFragment())
+                        fragSelect(DashboardUserFragment())
                         open = "a"
                     }
                 }
                 R.id.myAppointment -> {
                     if (open != "b"){
-                        fragSelect(MyAppointmentFragment(), DashboardUserFragment(), MyAccountFragment())
+                        fragSelect(MyAppointmentFragment())
                         open = "b"
                     }
                 }
                 R.id.esp -> {  }
                 R.id.myAccount -> {
                     if (open != "c"){
-                        fragSelect(MyAccountFragment(), MyAppointmentFragment(), DashboardUserFragment())
+                        fragSelect(MyAccountFragment())
                         open = "c"
                     }
                 }
@@ -64,23 +59,31 @@ class DashboardUserActivity : AppCompatActivity(){
         }
     }
 
-    private fun fragSelect(fragShow: Fragment, fragHide: Fragment, fragHide2: Fragment) {
+    private fun fragSelect(fragShow: Fragment) {
+        //Instanciamos el contenedor
+        val frag: Fragment? = supportFragmentManager.findFragmentById(R.id.frag)
+        //Instanciamos la transicion
         val transaction = supportFragmentManager.beginTransaction()
-            transaction
-                .hide(fragHide)
-                .hide(fragHide2)
-                .show(fragShow)
-                .commit()
-
+        //Condicional para saber si el fragment ya esta añadido
+        if (fragShow.isAdded){
+            frag?.let {
+                transaction
+                    .hide(it)  //Esconde el fragment actual
+                    .show(fragShow)  //Muestra el frament
+            }
+        } else {
+            frag?.let {
+                transaction
+                    .hide(it)  //Esconde el fragment actual
+                    .add(R.id.frag, fragShow)  //Añade el nuevo frament
+            }
+        }
+        transaction.commit()
     }
 
-    private fun deleteFrag(){
-        val frag = supportFragmentManager.findFragmentById(R.id.frag)
-        val transaction = supportFragmentManager.beginTransaction()
-        if (frag != null) {
-            transaction
-                .remove(frag)
-                .commit()
-        }
+    override fun onBackPressed() {
+        //Con esta linea, selecciona un item del bottom nav!!
+        //binding.main.bottomnav.selectedItemId = R.id.home_page
+        super.onBackPressed()
     }
 }
