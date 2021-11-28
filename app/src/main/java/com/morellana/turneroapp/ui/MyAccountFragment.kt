@@ -13,8 +13,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
-import com.morellana.turneroapp.DashboardUserActivity
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
@@ -48,17 +46,17 @@ class MyAccountFragment : Fragment() {
                 binding.data.text = "Modificar Datos"
             }
         }
-        val btn: Button = view.findViewById(R.id.boton)
-        btn.setOnClickListener {
-            logOut()
-        }
-
-        val passText: EditText = view.findViewById(R.id.new_pass)
-
-        val btnPass: Button = view.findViewById(R.id.new_pass_buttom)
-        btnPass.setOnClickListener {
-            newPass(passText)
-        }
+//        val btn: Button = view?.findViewById(R.id.boton) ?:
+//        btn.setOnClickListener {
+//            logOut()
+//        }
+//
+//        val passText: EditText = view.findViewById(R.id.new_pass)
+//
+//        val btnPass: Button = view.findViewById(R.id.new_pass_buttom)
+//        btnPass.setOnClickListener {
+//            newPass(passText)
+//        }
 
         return binding.root
     }

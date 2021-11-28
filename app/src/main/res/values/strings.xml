@@ -37,6 +37,8 @@
     <string name="myesp">Mis especialistas</string>
     <string name="contac">Contactenos</string>
     <string name="signout">Cerrar sesión</string>
+    <string name="chevron_left">&lt;</string>
+    <string name="chevron_right">&gt;</string>
     <string name="home">Inicio</string>
     <string name="now">Atendiendo ahora</string>
     <string name="esp2">Especialistas</string>
