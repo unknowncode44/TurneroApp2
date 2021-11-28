@@ -22,13 +22,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HorizontalCalendarAdapter(private val context: Context, private val data: ArrayList<Date>, currentDate: Calendar, changeMonth: Calendar?,
-                                private val atteDays: ArrayList<String?> = arrayListOf("null", "null", "null", "null", "null","null","null")
-): RecyclerView.Adapter<HorizontalCalendarAdapter.CalendarViewHolder>() {
+class HorizontalCalendarAdapter(private val context: Context, private val data: ArrayList<Date>, currentDate: Calendar, changeMonth: Calendar?): RecyclerView.Adapter<HorizontalCalendarAdapter.CalendarViewHolder>() {
     private var mListener: OnItemClickListener? = null // lo usaremos para los eventos de click en las celdas de los dias
     private var index = 0 // definimos el index en -1 porque...
     lateinit var db: DatabaseReference;
     private var selectCurrentDate: Boolean = true //
+    private var atteDays = arrayListOf("Mon","Tue","Fri", "Sat", null, null, null)
     private val currentMonth = currentDate[Calendar.MONTH] // mes actual
     private val currentYear = currentDate[Calendar.YEAR] // anio actual
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH] // dia actual

@@ -315,7 +315,7 @@ class NewAppointment : Fragment() {
         // tercera parte
         val context_: Context = requireContext()
         calendarRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val calendarAdapter = HorizontalCalendarAdapter(context_, dates, currentDate, changeMonth, atteDays)
+        val calendarAdapter = HorizontalCalendarAdapter(context_, dates, currentDate, changeMonth)
         calendarRecyclerView.adapter = calendarAdapter
 
         when{
