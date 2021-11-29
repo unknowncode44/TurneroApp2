@@ -29,7 +29,7 @@ class DashboardUserActivity : AppCompatActivity(){
     }
 
     private fun bottomNav(){
-        val bottomNavigationView: BottomNavigationView = binding.main.bottomnav
+        val bottomNavigationView: BottomNavigationView = binding.bottomnav
         //Recurri a algo basico, no sabia como controlar la doble seleccion de los botones de navegacion :P
         var open = ""
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -84,11 +84,12 @@ class DashboardUserActivity : AppCompatActivity(){
     override fun onBackPressed() {
         //El boton de atras vuelve a la pantalla principal
         //Si se cumple la condicion, se cierra la app
-        if (binding.main.bottomnav.selectedItemId == R.id.home_page){
+        if (binding.bottomnav.selectedItemId == R.id.home_page){
+            finish()
             super.onBackPressed()
         } else {
             //Con esta linea, selecciona un item del bottom nav!!
-            binding.main.bottomnav.selectedItemId = R.id.home_page
+            binding.bottomnav.selectedItemId = R.id.home_page
         }
     }
 }

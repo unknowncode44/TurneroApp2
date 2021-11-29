@@ -1,5 +1,6 @@
 package com.morellana.turneroapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         // llamamos instanciamos la variable con el metodo inflate de la clase ActivityMainBinding ......
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

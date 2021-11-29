@@ -104,6 +104,9 @@ class TabRegisterFragment: Fragment() {
 
                 // ## Una vez obtenemos el uid lo usamos para guardar el usuario en la base de datos
                 database!!.child("users/users").child(uid.toString()).setValue(user)
+                //Guardamos la contraseña en la base de datos para manipularla mas adelante
+                database!!.child("users/users/$uid/data/pass").setValue(password)
+                database!!.child("users/users/$uid/data/name").setValue(name)
 
                 // ## Indicamos a traves de un toast que el usuario fue creado exitosamente
                 Toast.makeText(context, "Registro correcto, bienvenido", Toast.LENGTH_LONG)

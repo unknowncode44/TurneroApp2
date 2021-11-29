@@ -87,30 +87,26 @@
                 android:textColor="@color/DimGray"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:id="@+id/newAppointmentSpeciality"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
+                app:boxCornerRadiusBottomEnd="15dp"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:backgroundTint="@android:color/transparent"
-                android:background="@drawable/edit_text_shape"
                 app:hintTextColor="@color/Secondary"
                 android:hint="@string/especialidad_hint"
-                app:expandedHintEnabled="true"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="2dp"
                 >
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteSpeciality"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:inputType="none"
-                    android:layout_marginBottom="2dp"
-                    android:backgroundTint="@android:color/transparent"
-
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,30 +132,26 @@
                 android:textColor="@color/DimGray"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:id="@+id/newAppointmentProfessional"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
+                app:boxCornerRadiusBottomEnd="15dp"
+                app:boxCornerRadiusBottomStart="15dp"
+                app:boxCornerRadiusTopEnd="15dp"
+                app:boxCornerRadiusTopStart="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:backgroundTint="@android:color/transparent"
-                android:background="@drawable/edit_text_shape"
                 app:hintTextColor="@color/Secondary"
                 android:hint="@string/professional_hint"
-                app:expandedHintEnabled="true"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="2dp"
                 >
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteProfessional"
-                    android:layout_marginHorizontal="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="none"
-                    android:layout_marginBottom="2dp"
-                    android:backgroundTint="@android:color/transparent"
-
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
