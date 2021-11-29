@@ -139,11 +139,12 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == RESULT_OK){
             val path: Uri? = data?.data
             binding.imageProfile.setImageURI(path)
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun logOut(){
