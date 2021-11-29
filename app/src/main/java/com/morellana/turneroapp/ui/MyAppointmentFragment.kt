@@ -49,7 +49,9 @@ class MyAppointmentFragment : Fragment() {
 
         _binding = FragmentMyAppointmentBinding.inflate(inflater, container, false)
 
-        binding.shimmerViewContainer.startShimmer()
+        val shimmer = binding.shimmerViewContainer
+
+//        binding.shimmerViewContainer.startShimmer()
 
         auth = FirebaseAuth.getInstance()
         currentUserUid = auth.currentUser!!.uid
@@ -76,7 +78,7 @@ class MyAppointmentFragment : Fragment() {
 
                         appointmentArrayList.add(appointments!!)
                     }
-                    binding.shimmerViewContainer.stopShimmer()
+//                    binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
 
                     appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentArrayList)
@@ -85,7 +87,7 @@ class MyAppointmentFragment : Fragment() {
                 //Si no existe ningun snapshot, muestra el mensaje
                 if (appointmentRecyclerView.adapter?.itemCount == 0){
                     Toast.makeText(context, "No hay turnos disponibles", Toast.LENGTH_SHORT).show()
-                    binding.shimmerViewContainer.stopShimmer()
+//                    binding.shimmerViewContainer.stopShimmer()
                     binding.shimmerViewContainer.visibility = View.GONE
                     binding.nullAppointment.visibility = View.VISIBLE
                 }

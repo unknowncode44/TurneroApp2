@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <View
+        android:id="@+id/side_border_left"
+        android:layout_width="0.5dp"
+        android:alpha="0.5"
+        android:layout_marginTop="15dp"
+        android:layout_height="match_parent"
+        android:background="@color/LightGrey"/>
+
+    <LinearLayout
+        android:id="@+id/calendar_linear_layout"
+        android:layout_width="56dp"
+        android:layout_height="48dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:fontFamily="@font/rubik_regular"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/txt_day"/>
+        <TextView
+            android:fontFamily="@font/rubik_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:id="@+id/txt_date"/>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/side_border_right"
+        android:layout_width="0.5dp"
+        android:alpha="0.5"
+        android:layout_marginTop="15dp"
+        android:layout_height="match_parent"
+        android:background="@color/LightGrey"/>
+
+
+</LinearLayout>
