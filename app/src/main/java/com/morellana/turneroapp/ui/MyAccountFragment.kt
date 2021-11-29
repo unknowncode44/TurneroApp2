@@ -1,6 +1,7 @@
 package com.morellana.turneroapp.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -35,7 +36,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
     //Implementamos el subir una imagen de la galeria
     companion object{
-        val IMAGE_REQUEST_CODE = 100
+        val IMAGE_REQUEST_CODE = 101
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,19 +133,20 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         return binding.root
     }
 
+    //Funcion para abrir la galeria y obtener la foto
     private fun pickImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+        requireActivity().startActivityFromFragment(this, intent, IMAGE_REQUEST_CODE)
     }
 
+    //Sobreescribimos la funcion
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        if (requestCode == RESULT_OK){
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
             val path: Uri? = data?.data
             binding.imageProfile.setImageURI(path)
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun logOut(){
