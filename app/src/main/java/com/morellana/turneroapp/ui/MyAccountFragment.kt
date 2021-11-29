@@ -2,7 +2,6 @@ package com.morellana.turneroapp.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
@@ -14,17 +13,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
 import com.morellana.turneroapp.dataclass.DialogMessageSimple
 import com.morellana.turneroapp.dataclass.UserInfo
-import java.net.URI
 
 //Implementamos la clase para el paso de datos
 class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
@@ -33,6 +31,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private val binding get() = _binding!!
     private lateinit var db: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    var storage = Firebase
 
     //Implementamos el subir una imagen de la galeria
     companion object{
@@ -147,6 +146,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             val path: Uri? = data?.data
             binding.imageProfile.setImageURI(path)
         }
+    }
+
+    private fun uploadImage(path: Uri?) {
+
     }
 
     private fun logOut(){
