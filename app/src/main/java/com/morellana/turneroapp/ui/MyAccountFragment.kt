@@ -1,30 +1,38 @@
 package com.morellana.turneroapp.ui
 
+import android.R.attr.thumbnail
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.service.controls.templates.ThumbnailTemplate
 import android.transition.TransitionInflater
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
-import com.morellana.turneroapp.dialogs.DialogMessageSimple
 import com.morellana.turneroapp.dataclass.UserInfo
+import com.morellana.turneroapp.dialogs.DialogMessageSimple
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.lang.System.out
+
 
 //Implementamos la clase para el paso de datos
 class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
@@ -146,8 +154,13 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
+            //La ubicacion de la imagen
             val path: Uri? = data?.data
-            binding.imageProfile.setImageURI(path)
+            //Tomamos la ubicacion de la imagen y la convertimos a bitmap
+            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+            val thumbnail: Boolean = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, ByteArrayOutputStream())
+            val decoded = BitmapFactory.decodeStream(ByteArrayInputStream(out.toByteArray()))
+            binding.imageProfile.setImageBitmap(bitmap)
             uploadImage(path)
         }
     }
