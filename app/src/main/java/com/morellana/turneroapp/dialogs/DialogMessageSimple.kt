@@ -1,6 +1,5 @@
-package com.morellana.turneroapp.dataclass
+package com.morellana.turneroapp.dialogs
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable

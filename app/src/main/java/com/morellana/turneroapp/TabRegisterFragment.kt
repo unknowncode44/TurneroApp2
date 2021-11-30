@@ -107,6 +107,7 @@ class TabRegisterFragment: Fragment() {
                 //Guardamos la contraseña en la base de datos para manipularla mas adelante
                 database!!.child("users/users/$uid/data/pass").setValue(password)
                 database!!.child("users/users/$uid/data/name").setValue(name)
+                database!!.child("users/users/$uid/data/email").setValue(email)
 
                 // ## Indicamos a traves de un toast que el usuario fue creado exitosamente
                 Toast.makeText(context, "Registro correcto, bienvenido", Toast.LENGTH_LONG)

@@ -1,9 +1,10 @@
 package com.morellana.turneroapp.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,17 +14,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
-import com.morellana.turneroapp.dataclass.DialogMessageSimple
+import com.morellana.turneroapp.dialogs.DialogMessageSimple
 import com.morellana.turneroapp.dataclass.UserInfo
-import java.net.URI
+import java.io.File
 
 //Implementamos la clase para el paso de datos
 class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
@@ -32,10 +33,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private val binding get() = _binding!!
     private lateinit var db: DatabaseReference
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var storage: FirebaseStorage
     //Implementamos el subir una imagen de la galeria
     companion object{
-        val IMAGE_REQUEST_CODE = 100
+        val IMAGE_REQUEST_CODE = 101
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +63,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
         //Sacamos los datos de la DB
         getInfo(user)
+        pickImgFromServer()
 
         //Escondemos el contenedor
         binding.containerGone.isVisible = false
@@ -127,23 +129,52 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //Cargamos una foto de la galeria
         binding.add.setOnClickListener {
             pickImage()
+            pickImgFromServer()
         }
 
         return binding.root
     }
 
+    //Funcion para abrir la galeria y obtener la foto
     private fun pickImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
-        startActivityForResult(intent, IMAGE_REQUEST_CODE)
+        requireActivity().startActivityFromFragment(this, intent, IMAGE_REQUEST_CODE)
     }
 
+    //Sobreescribimos la funcion
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RESULT_OK){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
             val path: Uri? = data?.data
             binding.imageProfile.setImageURI(path)
+            uploadImage(path)
         }
+    }
+
+    private fun uploadImage(path: Uri?) {
+        val storage = FirebaseStorage.getInstance().getReference("users/"+ auth.currentUser?.uid)
+        storage.putFile(path!!).addOnSuccessListener{
+            Toast.makeText(context, "Joya", Toast.LENGTH_SHORT).show()
+        } .addOnFailureListener {
+            Toast.makeText(context, "Mal", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun pickImgFromServer(){
+
+        val user: String = auth.currentUser?.uid.toString()
+        val storageRef = FirebaseStorage.getInstance().reference.child("users/$user")
+        val localFile = File.createTempFile("tempImage", "jpg")
+        storageRef.getFile(localFile).addOnSuccessListener {
+
+            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            binding.imageProfile.setImageBitmap(bitmap)
+
+        } .addOnFailureListener {
+            Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
+        }
+
     }
 
     private fun logOut(){
@@ -170,6 +201,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             }
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     private fun modify(uid: String){
         binding.ok.animate().translationX(0f).alpha(1F).setDuration(500).setStartDelay(300).start()
         binding.containerGone.isVisible = true
@@ -182,6 +214,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         getInfo(uid)
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     private fun back(uid: String){
         binding.ok.animate().translationX(-500f).alpha(0F).setDuration(500).setStartDelay(300).start()
         binding.containerGone.isVisible = false
@@ -219,15 +252,15 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         db.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()){
-                    val name: String = snapshot.child("name").getValue().toString()
+                    val name: String = snapshot.child("name").value.toString()
                     binding.name.setText(name)
-                    val lastName: String = snapshot.child("lastName").getValue().toString()
+                    val lastName: String = snapshot.child("lastName").value.toString()
                     binding.lastName.setText(lastName)
-                    val phone: String = snapshot.child("phone").getValue().toString()
+                    val phone: String = snapshot.child("phone").value.toString()
                     binding.phone.setText(phone)
-                    val email: String = snapshot.child("email").getValue().toString()
+                    val email: String = snapshot.child("email").value.toString()
                     binding.email.setText(email)
-                    val pass: String = snapshot.child("pass").getValue().toString()
+                    val pass: String = snapshot.child("pass").value.toString()
                     binding.pass.setText(pass)
 
                 }
