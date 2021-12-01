@@ -71,7 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/imageProfile"
-                android:background="@color/Gray"/>
+                android:scaleType="fitXY"
+                android:background="@drawable/gradient01"/>
 
         </androidx.cardview.widget.CardView>
 

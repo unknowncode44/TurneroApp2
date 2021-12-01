@@ -7,10 +7,12 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.service.controls.templates.ThumbnailTemplate
+import android.system.Os.read
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
@@ -154,40 +156,65 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
+
             //La ubicacion de la imagen
             val path: Uri? = data?.data
             //Tomamos la ubicacion de la imagen y la convertimos a bitmap
-//            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
-//            val thumbnail: Boolean = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, ByteArrayOutputStream())
-//            val decoded = BitmapFactory.decodeStream(ByteArrayInputStream(out.toByteArray()))
-//            binding.imageProfile.setImageBitmap(bitmap)
-//            uploadImage(path)
+            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+            //Convertimos la imagen a escala
+            val imagen = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+            binding.imageProfile.setImageBitmap(imagen)
+            uploadImage(path)
         }
     }
 
+    //La idea es subir 2 imagenes, para que muestre como en whatsapp, la imagen de resolucion baja,
+    // y cuando la abran, la de resolucion alta
     private fun uploadImage(path: Uri?) {
-        val storage = FirebaseStorage.getInstance().getReference("users/"+ auth.currentUser?.uid)
-        storage.putFile(path!!).addOnSuccessListener{
+        val user: String = auth.currentUser?.uid.toString()
+        val storage = FirebaseStorage.getInstance().getReference("users")
+
+        //Obtenemos la imagen de la ubicacion
+        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+        val baos = ByteArrayOutputStream()
+        //Convertimos la imagen a byte
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        //La almacenamos
+        val data = baos.toByteArray()
+        val imageNoResized = storage.child(user + "noresized")
+        var uploadTask = imageNoResized.putBytes(data)
+        //La subimos
+        uploadTask.addOnSuccessListener{
             Toast.makeText(context, "Joya", Toast.LENGTH_SHORT).show()
         } .addOnFailureListener {
             Toast.makeText(context, "Mal", Toast.LENGTH_SHORT).show()
         }
+
+        //La imagen reducida
+        val baos2 = ByteArrayOutputStream()
+        val imagen = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+        imagen.compress(Bitmap.CompressFormat.JPEG, 25, baos2)
+        val data2 = baos.toByteArray()
+        val imageResized = storage.child(user + "resized")
+        uploadTask = imageResized.putBytes(data2)
+        uploadTask.addOnSuccessListener {
+            Toast.makeText(context, "Joya x2", Toast.LENGTH_SHORT).show()
+        } .addOnFailureListener {
+            Toast.makeText(context, "Mal x2", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun pickImgFromServer(){
-
         val user: String = auth.currentUser?.uid.toString()
         val storageRef = FirebaseStorage.getInstance().reference.child("users/$user")
         val localFile = File.createTempFile("tempImage", "jpg")
         storageRef.getFile(localFile).addOnSuccessListener {
-
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
             binding.imageProfile.setImageBitmap(bitmap)
-
+            Toast.makeText(context, "Todo bien", Toast.LENGTH_LONG).show()
         } .addOnFailureListener {
             Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
         }
-
     }
 
     private fun logOut(){
