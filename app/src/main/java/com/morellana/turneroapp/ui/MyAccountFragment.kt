@@ -157,11 +157,11 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             //La ubicacion de la imagen
             val path: Uri? = data?.data
             //Tomamos la ubicacion de la imagen y la convertimos a bitmap
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
-            val thumbnail: Boolean = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, ByteArrayOutputStream())
-            val decoded = BitmapFactory.decodeStream(ByteArrayInputStream(out.toByteArray()))
-            binding.imageProfile.setImageBitmap(bitmap)
-            uploadImage(path)
+//            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+//            val thumbnail: Boolean = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, ByteArrayOutputStream())
+//            val decoded = BitmapFactory.decodeStream(ByteArrayInputStream(out.toByteArray()))
+//            binding.imageProfile.setImageBitmap(bitmap)
+//            uploadImage(path)
         }
     }
 
