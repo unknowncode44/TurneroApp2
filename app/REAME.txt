@@ -1,0 +1,82 @@
+**Cosas que fueron descartadas:
+
+Para cortar imagenes:
+        //--------------------------------------------------------------------------------
+
+//        if (resultCode == 3434) {
+//            super.onActivityResult(requestCode, resultCode, data)
+//            val imagen: Bitmap = data?.extras?.get("data") as Bitmap
+//
+//            //una vez tenida la imagen hacer lo que se desee con esta.
+//            val ulrImagen: Uri? = data.data;
+//
+//            cropCapturedImage(ulrImagen)
+//        }else if(resultCode == 3535){
+//
+//            //Este seria el bitmap de nuestra imagen cortada.
+//            val imagenCortada: Bitmap = data?.extras?.get("data") as Bitmap
+//
+//            binding.imageProfile.setImageBitmap(imagenCortada)
+//        }
+
+        //--------------------------------------------------------------------------------
+
+Para seleccionar una imagen:
+
+Declaramos el objeto:
+
+    //Implementamos el subir una imagen de la galeria
+    companion object{
+        val IMAGE_REQUEST_CODE = 101
+    }
+
+Boton:
+        binding.add.setOnClickListener {
+
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            //3434 es un int que esperaremos como resultado una vez sea tomada la foto.
+            requireActivity().startActivityFromFragment(this, intent, 3434)
+
+//            pickImage()
+//            pickImgFromServer()
+        }
+
+
+    //Funcion para abrir la galeria y obtener la foto
+    private fun pickImage() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        requireActivity().startActivityFromFragment(this, intent, IMAGE_REQUEST_CODE)
+    }
+
+
+    //Sobreescribimos la funcion
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
+
+            //La ubicacion de la imagen
+            val path: Uri? = data?.data
+            //Tomamos la ubicacion de la imagen y la convertimos a bitmap
+            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+            //Convertimos la imagen a escala
+            val imagen = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+
+            binding.imageProfile.setImageBitmap(imagen)
+//            uploadImage(path)
+        }
+    }
+
+La idea es:
+1. Subir la imagen
+2. Crear un thumbnail de la misma
+3. Almacenarla en memoria
+4. Que se cargue el thumbnail en el inicio, desde la memoria
+5. Cuando abrimos la imagen, cargue desde el servidor
+                //GENIAL//
+
+¿Inconvenientes?
+1. Si cambia de usuario, carga siempre la misma foto de perfil ): -> la imagen deberia de tener como nombre la uid
+2. Si desinstala, y vuelve a instalar, la imagen desaparece -> cuando se llama la actividad, deberia descargar la imagen!
