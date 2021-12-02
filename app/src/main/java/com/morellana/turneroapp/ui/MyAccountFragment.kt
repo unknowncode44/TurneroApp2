@@ -1,18 +1,13 @@
 package com.morellana.turneroapp.ui
 
-import android.R.attr.thumbnail
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.service.controls.templates.ThumbnailTemplate
-import android.system.Os.read
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,11 +24,13 @@ import com.morellana.turneroapp.SplashActivity
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
 import com.morellana.turneroapp.dataclass.UserInfo
 import com.morellana.turneroapp.dialogs.DialogMessageSimple
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.lang.System.out
+import android.content.Context
+import android.content.ContextWrapper
+import android.media.ThumbnailUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import com.theartofdev.edmodo.cropper.CropImage
+import java.io.*
 
 
 //Implementamos la clase para el paso de datos
@@ -44,10 +41,24 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private lateinit var db: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
-    //Implementamos el subir una imagen de la galeria
-    companion object{
-        val IMAGE_REQUEST_CODE = 101
+
+    //Image Crop
+    //-------------------------------------------------------------------------------------
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>(){
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .setAspectRatio(16, 16)
+                .getIntent(context)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent).uri
+        }
+
     }
+    //-------------------------------------------------------------------------------------
+
+    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +68,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         exitTransition = inflater.inflateTransition(R.transition.slide_left)
     }
 
-    @SuppressLint("UseCompatLoadingForColorStateLists")
+    @SuppressLint("UseCompatLoadingForColorStateLists", "WrongThread")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,7 +84,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
         //Sacamos los datos de la DB
         getInfo(user)
-        pickImgFromServer()
+        pickImgFromLocal(requireContext())
 
         //Escondemos el contenedor
         binding.containerGone.isVisible = false
@@ -136,44 +147,35 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             back(user)
         }
 
+        //Image Crop
+        //-------------------------------------------------------------------------------------
+        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract){
+            it?.let { uri ->
+                //Cargamos la imagen por su URI - Uniform Resource Identifier,
+                // “Identificador uniforme de recursos” (ubicacion)
+                binding.imageProfile.setImageURI(uri)
+                uploadImage(uri)
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+                saveToInternalStorage(bitmap, requireContext())
+            }
+        }
+        //-------------------------------------------------------------------------------------
+
         //Cargamos una foto de la galeria
         binding.add.setOnClickListener {
-            pickImage()
-            pickImgFromServer()
+
+            //Image Crop
+            cropActivityResultLauncher.launch(null)
+
         }
 
         return binding.root
     }
 
-    //Funcion para abrir la galeria y obtener la foto
-    private fun pickImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        requireActivity().startActivityFromFragment(this, intent, IMAGE_REQUEST_CODE)
-    }
-
-    //Sobreescribimos la funcion
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_REQUEST_CODE){
-
-            //La ubicacion de la imagen
-            val path: Uri? = data?.data
-            //Tomamos la ubicacion de la imagen y la convertimos a bitmap
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
-            //Convertimos la imagen a escala
-            val imagen = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
-            binding.imageProfile.setImageBitmap(imagen)
-            uploadImage(path)
-        }
-    }
-
-    //La idea es subir 2 imagenes, para que muestre como en whatsapp, la imagen de resolucion baja,
-    // y cuando la abran, la de resolucion alta
+    //Sube la imagen original al servidor
     private fun uploadImage(path: Uri?) {
         val user: String = auth.currentUser?.uid.toString()
         val storage = FirebaseStorage.getInstance().getReference("users")
-
         //Obtenemos la imagen de la ubicacion
         val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
         val baos = ByteArrayOutputStream()
@@ -181,40 +183,80 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         //La almacenamos
         val data = baos.toByteArray()
-        val imageNoResized = storage.child(user + "noresized")
-        var uploadTask = imageNoResized.putBytes(data)
+        val imageNoResized = storage.child(user)
+        val uploadTask = imageNoResized.putBytes(data)
         //La subimos
         uploadTask.addOnSuccessListener{
             Toast.makeText(context, "Joya", Toast.LENGTH_SHORT).show()
         } .addOnFailureListener {
             Toast.makeText(context, "Mal", Toast.LENGTH_SHORT).show()
         }
+    }
 
-        //La imagen reducida
-        val baos2 = ByteArrayOutputStream()
-        val imagen = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
-        imagen.compress(Bitmap.CompressFormat.JPEG, 25, baos2)
-        val data2 = baos.toByteArray()
-        val imageResized = storage.child(user + "resized")
-        uploadTask = imageResized.putBytes(data2)
-        uploadTask.addOnSuccessListener {
-            Toast.makeText(context, "Joya x2", Toast.LENGTH_SHORT).show()
-        } .addOnFailureListener {
-            Toast.makeText(context, "Mal x2", Toast.LENGTH_SHORT).show()
+    //Guarda la imagen en el almacenamiento interno (thumbnail)
+    private fun saveToInternalStorage(bitmap: Bitmap, context: Context): String {
+        val name = auth.currentUser?.uid
+        //Obtenemos la direccion para guardar la imagen
+        val cw = ContextWrapper(context.applicationContext)
+        // path: /data/data/yourapp/app_data/.thumbnails
+        val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE)
+        // Creamos la direccion
+        Log.d("PATH", directory.path)
+        val mypath = File(directory, "$name.jpg")
+
+        //Creamos una imagen thumbnail para facilitar la carga
+        val thumbImage: Bitmap = ThumbnailUtils.extractThumbnail(
+            bitmap,
+            500,
+            500
+        )
+
+        var fos: FileOutputStream? = null
+        try {
+            fos = FileOutputStream(mypath)
+            thumbImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            try {
+                fos!!.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return directory.absolutePath
+    }
+
+    //Obtenemos la imagen creada tipo thumbnail, para mejorar el tiempo de carga
+    private fun pickImgFromLocal(context: Context){
+
+        val name = auth.currentUser?.uid
+        val cw = ContextWrapper(context.applicationContext)
+        val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE)
+        Log.d("PATH", directory.path)
+        val mypath = File(directory, "$name.jpg")
+        val bitmap = BitmapFactory.decodeFile(mypath.absolutePath)
+        if (bitmap != null){
+            binding.imageProfile.setImageBitmap(bitmap)
+        } else {
+            val bitmat: Bitmap = pickImgFromServer()
         }
     }
 
-    private fun pickImgFromServer(){
+    //Carga la imagen desde el servidor (Su utilidad es para cuando abramos la imagen)
+    private fun pickImgFromServer(): Bitmap? {
         val user: String = auth.currentUser?.uid.toString()
-        val storageRef = FirebaseStorage.getInstance().reference.child("users/$user")
+        val storageRef = FirebaseStorage.getInstance().reference.child("users/" + user + "noresized")
+        //Creamos un archivo temporal
         val localFile = File.createTempFile("tempImage", "jpg")
+        //Cargamos la imagen del storage en ese archivo temporal
         storageRef.getFile(localFile).addOnSuccessListener {
+            //Lo comvertimos a bitmap
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            binding.imageProfile.setImageBitmap(bitmap)
-            Toast.makeText(context, "Todo bien", Toast.LENGTH_LONG).show()
         } .addOnFailureListener {
             Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
         }
+
     }
 
     private fun logOut(){
