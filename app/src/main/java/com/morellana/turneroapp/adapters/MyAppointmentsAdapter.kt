@@ -1,5 +1,6 @@
 package com.morellana.turneroapp.adapters
 
+import android.content.Context
 import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
@@ -11,31 +12,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.dataclass.Appointment
 
-class MyAppointmentsAdapter(private val myAppointments: List<Appointment>):  RecyclerView.Adapter<MyAppointmentsAdapter.MyAppointmentsViewHolder>(){
+class MyAppointmentsAdapter (private val context: Context):  RecyclerView.Adapter<MyAppointmentsAdapter.MyAppointmentsViewHolder>(){
 
-    class MyAppointmentsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    private var dataList = mutableListOf<Appointment>()
 
-        val appointmentProfessional: TextView = itemView.findViewById(R.id.doctorName)
-        val appointmentDate: TextView = itemView.findViewById(R.id.appointmentDate)
-        val appointmentTime: TextView = itemView.findViewById(R.id.appointmentTime)
-        val appointmentSpeciality: TextView = itemView.findViewById(R.id.appointmentSpeciality)
-        val appointmentPlace: TextView = itemView.findViewById(R.id.appointmentPlace)
-        val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.layout)
-        val linearLayout: LinearLayout = itemView.findViewById(R.id.linearLayout4)
+    fun setListData(data: MutableList<Appointment>){
+        dataList = data
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyAppointmentsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.my_appointment_expandable, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.my_appointment_expandable,
+            parent, false)
+
         return MyAppointmentsViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MyAppointmentsViewHolder, position: Int) {
-        val currentItem = myAppointments[position]
-        holder.appointmentProfessional.text = currentItem.professional
-        holder.appointmentDate.text = currentItem.date
-        holder.appointmentTime.text = currentItem.time
-        holder.appointmentSpeciality.text = currentItem.speciality
-        holder.appointmentPlace.text = currentItem.place
-
+        val currentItem = dataList[position]
+        holder.bindView(currentItem)
         val isVisible: Boolean = currentItem.visibility
         holder.constraintLayout.visibility = if(isVisible) View.VISIBLE else View.GONE
         holder.linearLayout.setOnClickListener{
@@ -43,11 +37,26 @@ class MyAppointmentsAdapter(private val myAppointments: List<Appointment>):  Rec
             notifyItemChanged(position)
         }
 
+    }
+
+    inner class MyAppointmentsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.layout)
+        val linearLayout: LinearLayout = itemView.findViewById(R.id.linearLayout4)
+
+        fun bindView (appointment: Appointment){
+            itemView.findViewById<TextView>(R.id.doctorName).text = appointment.professional
+            itemView.findViewById<TextView>(R.id.appointmentDate).text = appointment.date
+            itemView.findViewById<TextView>(R.id.appointmentTime).text = appointment.time
+            itemView.findViewById<TextView>(R.id.appointmentSpeciality).text = appointment.speciality
+            itemView.findViewById<TextView>(R.id.appointmentPlace).text = appointment.place
+
+        }
 
     }
 
     override fun getItemCount(): Int {
-        return myAppointments.size
+        return dataList.size
     }
 }
 

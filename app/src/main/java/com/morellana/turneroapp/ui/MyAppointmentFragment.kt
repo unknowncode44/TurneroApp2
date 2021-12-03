@@ -1,5 +1,6 @@
 package com.morellana.turneroapp.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.TransitionInflater
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.graphics.alpha
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -20,8 +22,15 @@ import com.morellana.turneroapp.adapters.MyAppointmentsAdapter
 import com.morellana.turneroapp.databinding.FragmentMyAppointmentBinding
 import com.morellana.turneroapp.dataclass.Appointment
 import com.morellana.turneroapp.dataclass.Profesional
+import com.morellana.turneroapp.viewmodel.MyAppointmentViewModel
 
 class MyAppointmentFragment : Fragment() {
+
+    //Instanciamos el adapter:
+    private lateinit var adapter: MyAppointmentsAdapter
+
+    //Ahora el viewModel:
+    private val viewModel by lazy { ViewModelProviders.of(this).get(MyAppointmentViewModel::class.java) }
 
     //Binding
     private var _binding: FragmentMyAppointmentBinding? = null
@@ -48,54 +57,81 @@ class MyAppointmentFragment : Fragment() {
     ): View? {
 
         _binding = FragmentMyAppointmentBinding.inflate(inflater, container, false)
+        //------------------------------------------------------------------
+        adapter = MyAppointmentsAdapter(requireContext())
 
-        val shimmer = binding.shimmerViewContainer
+        appointmentRecyclerView = binding.myAppointments
+        appointmentRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        appointmentRecyclerView.adapter = adapter
+        observerData()
+
+
+
+
 
 //        binding.shimmerViewContainer.startShimmer()
+//
+//        auth = FirebaseAuth.getInstance()
+//        currentUserUid = auth.currentUser!!.uid
+//        appointmentRecyclerView = binding.myAppointments
+//        appointmentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+//        appointmentRecyclerView.setHasFixedSize(true)
+//        appointmentArrayList = arrayListOf<Appointment>()
 
-        auth = FirebaseAuth.getInstance()
-        currentUserUid = auth.currentUser!!.uid
-        appointmentRecyclerView = binding.myAppointments
-        appointmentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        appointmentRecyclerView.setHasFixedSize(true)
-        appointmentArrayList = arrayListOf<Appointment>()
 
-
-        getAppointmentData(currentUserUid)
+//        getAppointmentData(currentUserUid)
 
 
 
         return binding.root
     }
-    private fun getAppointmentData(uid: String) {
-        dbRef = FirebaseDatabase.getInstance().getReference("users/users/$uid/appointments")
-        dbRef.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
 
-                    for (appointmentSnapshot in snapshot.children){
-                        val appointments = appointmentSnapshot.getValue(Appointment::class.java)
-
-                        appointmentArrayList.add(appointments!!)
-                    }
-//                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-
-                    appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentArrayList)
-                }
-
-                //Si no existe ningun snapshot, muestra el mensaje
-                if (appointmentRecyclerView.adapter?.itemCount == 0){
-                    Toast.makeText(context, "No hay turnos disponibles", Toast.LENGTH_SHORT).show()
-//                    binding.shimmerViewContainer.stopShimmer()
-                    binding.shimmerViewContainer.visibility = View.GONE
-                    binding.nullAppointment.visibility = View.VISIBLE
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+    //View Model
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observerData() {
+        viewModel.fetchMyAppointmentData().observe( viewLifecycleOwner, {
+            adapter.setListData(it)
+            adapter.notifyDataSetChanged()
+//
+//            shimmer.startShimmer()
+////            viewModel.fetchContactData().observe(this, Observer {
+//                shimmer.stopShimmer()
+//                shimmer.hideShimmer()
+//                adapter.setListData(it)
+//                adapter.notifyDataSetChanged()
+//            })
         })
     }
+
+//    private fun getAppointmentData(uid: String) {
+//        dbRef = FirebaseDatabase.getInstance().getReference("users/users/$uid/appointments")
+//        dbRef.addValueEventListener(object: ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (snapshot.exists()){
+//
+//                    for (appointmentSnapshot in snapshot.children){
+//                        val appointments = appointmentSnapshot.getValue(Appointment::class.java)
+//
+//                        appointmentArrayList.add(appointments!!)
+//                    }
+////                    binding.shimmerViewContainer.stopShimmer()
+//                    binding.shimmerViewContainer.visibility = View.GONE
+//
+//                    appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentArrayList)
+//                }
+//
+//                //Si no existe ningun snapshot, muestra el mensaje
+//                if (appointmentRecyclerView.adapter?.itemCount == 0){
+//                    Toast.makeText(context, "No hay turnos disponibles", Toast.LENGTH_SHORT).show()
+////                    binding.shimmerViewContainer.stopShimmer()
+//                    binding.shimmerViewContainer.visibility = View.GONE
+//                    binding.nullAppointment.visibility = View.VISIBLE
+//                }
+//            }
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("Not yet implemented")
+//            }
+//        })
+//    }
 
 }

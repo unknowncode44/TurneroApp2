@@ -15,14 +15,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelStores.of
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SplashActivity
+import com.morellana.turneroapp.adapters.MyAppointmentsAdapter
 import com.morellana.turneroapp.databinding.FragmentMyAccountBinding
 import com.morellana.turneroapp.dataclass.DialogMessageSimple
 import com.morellana.turneroapp.dataclass.UserInfo
+import com.morellana.turneroapp.viewmodel.MyAppointmentViewModel
+import java.util.EnumSet.of
+import java.util.List.of
 
 //Implementamos la clase para el paso de datos
 class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
