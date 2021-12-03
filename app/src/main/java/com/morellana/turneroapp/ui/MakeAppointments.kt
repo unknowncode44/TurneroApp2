@@ -13,8 +13,8 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.databinding.FragmentMakeAppointmentsBinding
-import com.morellana.turneroapp.dataclass.Profesional
-import com.morellana.turneroapp.dataclass.Speciality
+import com.morellana.turneroapp.dashboarduser.dataclass.ProfessionalData
+import com.morellana.turneroapp.dashboarduser.dataclass.SpecialtyData
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -22,7 +22,7 @@ class MakeAppointments : Fragment() {
     //variables de trabajo
     private var _binding: FragmentMakeAppointmentsBinding? = null
     private val binding get() = _binding!!
-    lateinit var specialityArray: ArrayList<Speciality>
+    lateinit var specialtyDataArray: ArrayList<SpecialtyData>
     lateinit var specialityArrayName: ArrayList<String?>
     lateinit var professionalArrayName: ArrayList<String?>
     private lateinit var dbRef: DatabaseReference
@@ -69,7 +69,7 @@ class MakeAppointments : Fragment() {
 
         // realizamos las instancias para autocomplete
         specialityArrayName = arrayListOf<String?>()
-        specialityArray = arrayListOf<Speciality>()
+        specialtyDataArray = arrayListOf<SpecialtyData>()
         professionalArrayName = arrayListOf<String?>()
         specialityInput = binding.newAppointmentSpeciality
 
@@ -111,7 +111,7 @@ class MakeAppointments : Fragment() {
                         profRef.addValueEventListener(object: ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.exists()){
-                                    val professional: Profesional? = snapshot.getValue(Profesional::class.java)
+                                    val professional: ProfessionalData? = snapshot.getValue(ProfessionalData::class.java)
                                     val name = professional?.name.toString() // y obtendremos su nombre
                                     professionalArrayName.add(name) // lo anadiremos a este array
                                 }
@@ -141,7 +141,7 @@ class MakeAppointments : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()){
                     for (specialitySnapshot in snapshot.children){
-                        val specialities = specialitySnapshot.getValue(Speciality::class.java)
+                        val specialities = specialitySnapshot.getValue(SpecialtyData::class.java)
                         specialityArrayName.add(specialities!!.name)
 //                        specialityArray.add(specialities!!)
                     }

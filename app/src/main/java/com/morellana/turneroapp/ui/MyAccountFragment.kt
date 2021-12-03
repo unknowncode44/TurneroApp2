@@ -239,24 +239,23 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         if (bitmap != null){
             binding.imageProfile.setImageBitmap(bitmap)
         } else {
-            val bitmat: Bitmap = pickImgFromServer()
+            pickImgFromServer()
         }
     }
 
     //Carga la imagen desde el servidor (Su utilidad es para cuando abramos la imagen)
-    private fun pickImgFromServer(): Bitmap? {
+    private fun pickImgFromServer() {
         val user: String = auth.currentUser?.uid.toString()
         val storageRef = FirebaseStorage.getInstance().reference.child("users/" + user + "noresized")
         //Creamos un archivo temporal
         val localFile = File.createTempFile("tempImage", "jpg")
         //Cargamos la imagen del storage en ese archivo temporal
         storageRef.getFile(localFile).addOnSuccessListener {
-            //Lo comvertimos a bitmap
+            //Lo convertimos a bitmap
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
         } .addOnFailureListener {
             Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
         }
-
     }
 
     private fun logOut(){

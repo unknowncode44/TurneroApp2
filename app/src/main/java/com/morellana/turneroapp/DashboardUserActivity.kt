@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.morellana.turneroapp.databinding.ActivityDashboardUserBinding
-import com.morellana.turneroapp.ui.DashboardUserFragment
+import com.morellana.turneroapp.dashboarduser.ui.DashboardUserFragment
 import com.morellana.turneroapp.ui.MyAccountFragment
-import com.morellana.turneroapp.ui.MyAppointmentFragment
+import com.morellana.turneroapp.myappointment.ui.MyAppointmentFragment
 
 class DashboardUserActivity : AppCompatActivity(){
 

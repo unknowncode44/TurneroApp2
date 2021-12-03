@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/White"
-    tools:context=".ui.DashboardUserFragment"
+    tools:context=".dashboarduser.ui.DashboardUserFragment"
     android:layout_marginTop="10dp"
     android:fitsSystemWindows="true">
 
@@ -105,7 +105,7 @@
         </LinearLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_recycler_dr_cards"
+            android:id="@+id/shimmer_professional"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:layout_marginStart="5dp"
@@ -126,7 +126,7 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_dr_cards"
+            android:id="@+id/professional_doctor_recycler"
             android:layout_width="match_parent"
             android:layout_height="210dp"
             android:layout_marginStart="5dp"
@@ -148,7 +148,7 @@
             android:textStyle="bold"
             android:layout_marginTop="5dp"
             android:layout_marginStart="5dp"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_dr_cards"
+            app:layout_constraintTop_toBottomOf="@+id/professional_doctor_recycler"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -165,7 +165,7 @@
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/text2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_dr_cards"
+            app:layout_constraintTop_toBottomOf="@+id/professional_doctor_recycler"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias=".02"
             app:layout_constraintHorizontal_bias=".6"/>
@@ -198,7 +198,7 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/specialitiesRecyclerView"
+            android:id="@+id/specialtiesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_marginHorizontal="15dp"
@@ -218,7 +218,7 @@
             android:text="Atendiendo ahora"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/specialitiesRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/specialtiesRecyclerView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -235,13 +235,13 @@
             android:textStyle="normal"
             app:layout_constraintStart_toEndOf="@+id/text3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specialitiesRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/specialtiesRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias=".02"
             app:layout_constraintHorizontal_bias=".6"/>
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_available_doctor"
+            android:id="@+id/shimmer_online_doctor"
             android:layout_width="match_parent"
             android:layout_height="195dp"
             android:layout_marginEnd="5dp"
@@ -265,7 +265,7 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/available_doctor_recycler"
+            android:id="@+id/online_doctor_recycler"
             android:layout_width="match_parent"
             android:layout_height="195dp"
             android:layout_marginEnd="5dp"

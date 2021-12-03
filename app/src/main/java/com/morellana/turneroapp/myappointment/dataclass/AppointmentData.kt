@@ -1,8 +1,8 @@
-package com.morellana.turneroapp.dataclass
+package com.morellana.turneroapp.myappointment.dataclass
 
 import android.text.Layout
 
-data class Appointment(
+data class AppointmentData(
     var professional: String? = null,
     var speciality: String? = null,
     var date: String? = null,
