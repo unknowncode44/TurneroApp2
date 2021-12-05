@@ -11,63 +11,62 @@
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/available_doctor_card.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/cad_items.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/calendar_cell.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/dashboard_user_bar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/data_placeholder_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_calendar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_dashboard_user.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_my_account.xml" value="0.33" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_make_appointments.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_my_account.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_my_appointment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_new_appointment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_online_doctor.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_professional.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_specialist.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_tab_login.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/fragment_tab_register.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/my_appointment_card.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/my_appointment_expandable.xml" value="0.17777777777777778" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/nav_header.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/progress_bar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/row_doctor_card.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/shimmer_available_doctor_card.xml" value="0.203125" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/shimmer_row_doctor_card.xml" value="0.203125" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/shimmer_speciality_icon_card.xml" value="0.203125" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/speciality_icon_card.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/layout/test.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/menu/bottom_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Giuliana/Desktop/Roberto/Proyectos/BASANI/TurneroApp2/app/src/main/res/menu/menu.xml" value="0.20416666666666666" />
-        <entry key="app/src/main/res/drawable-v24/shape_card04.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/drawable/category_menu.xml" value="0.22447916666666667" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.30572916666666666" />
         <entry key="app/src/main/res/drawable/nav_icons_style.xml" value="0.18611111111111112" />
-        <entry key="app/src/main/res/drawable/shape_button01.xml" value="0.15572916666666667" />
-        <entry key="app/src/main/res/drawable/shape_button02.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/drawable/shape_button_cancel.xml" value="0.14166666666666666" />
-        <entry key="app/src/main/res/drawable/shape_toolbar01.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/drawable/shape_toolbar02.xml" value="0.22447916666666667" />
-        <entry key="app/src/main/res/drawable/shape_toolbar03.xml" value="0.15572916666666667" />
         <entry key="app/src/main/res/drawable/shape_toolbar04.xml" value="0.18611111111111112" />
-        <entry key="app/src/main/res/drawable/shape_toolbar05.xml" value="0.15572916666666667" />
-        <entry key="app/src/main/res/drawable/shimmer_background.xml" value="0.27760416666666665" />
         <entry key="app/src/main/res/layout/activity_dashboard_user.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_prueba_view_model.xml" value="0.23177083333333334" />
         <entry key="app/src/main/res/layout/activity_search_doctor.xml" value="0.18611111111111112" />
-        <entry key="app/src/main/res/layout/appointment_time_card.xml" value="0.33" />
         <entry key="app/src/main/res/layout/available_doctor_card.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/layout/calendar_cell.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/layout/custom_calendar_day.xml" value="1.0" />
         <entry key="app/src/main/res/layout/dashboard_user_bar.xml" value="0.33" />
         <entry key="app/src/main/res/layout/data_placeholder_layout.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/dropdown_item.xml" value="0.28958333333333336" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_dashboard_user.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_dashboard_user.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/layout/fragment_make_appointments.xml" value="0.2635416666666667" />
         <entry key="app/src/main/res/layout/fragment_my_appointment.xml" value="0.24814814814814815" />
-        <entry key="app/src/main/res/layout/fragment_new_appointment.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_new_appointment.xml" value="0.4332171893147503" />
         <entry key="app/src/main/res/layout/fragment_tab_login.xml" value="0.12552083333333333" />
-        <entry key="app/src/main/res/layout/fragment_tab_register.xml" value="0.1796875" />
         <entry key="app/src/main/res/layout/my_appointment_card.xml" value="0.5184880854560394" />
         <entry key="app/src/main/res/layout/my_appointment_expandable.xml" value="0.67" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/row_doctor_card.xml" value="0.32864583333333336" />
-        <entry key="app/src/main/res/layout/shimmer_available_doctor_card.xml" value="0.9" />
-        <entry key="app/src/main/res/layout/shimmer_row_doctor_card.xml" value="0.26145833333333335" />
-        <entry key="app/src/main/res/layout/shimmer_speciality_icon_card.xml" value="0.26145833333333335" />
         <entry key="app/src/main/res/layout/speciality_icon_card.xml" value="0.24814814814814815" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.24814814814814815" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.1925925925925926" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

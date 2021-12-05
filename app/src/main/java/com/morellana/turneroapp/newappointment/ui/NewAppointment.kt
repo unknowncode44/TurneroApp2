@@ -1,7 +1,11 @@
-package com.morellana.turneroapp.ui
+package com.morellana.turneroapp.newappointment.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.transition.TransitionInflater
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,17 +15,21 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
+import com.morellana.turneroapp.MainActivity
 import com.morellana.turneroapp.R
-import com.morellana.turneroapp.adapters.HorizontalCalendarAdapter
+import com.morellana.turneroapp.newappointment.adapters.HorizontalCalendarAdapter
 import com.morellana.turneroapp.databinding.FragmentNewAppointmentBinding
 import com.morellana.turneroapp.dashboarduser.dataclass.ProfessionalData
-import com.morellana.turneroapp.dashboarduser.dataclass.SpecialtyData
+import com.morellana.turneroapp.newappointment.dataclass.AtteDays
+import com.morellana.turneroapp.newappointment.dataclass.NewAppointmentProfessionalData
+import com.morellana.turneroapp.newappointment.models.NewAppointmentViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,24 +38,24 @@ class NewAppointment : Fragment() {
     // variables de trabajo
     private var _binding: FragmentNewAppointmentBinding? = null
     private val binding get() = _binding!!
-    lateinit var specialtyDataArray: ArrayList<SpecialtyData>
-    lateinit var specialityArrayName: ArrayList<String?>
+    private lateinit var specialityArrayName: ArrayList<String>
     lateinit var professionalArrayName: ArrayList<String?>
+    lateinit var professionalArrayInfo: ArrayList<NewAppointmentProfessionalData>
     private lateinit var dbRef: DatabaseReference
-    lateinit var atteDays: ArrayList<String?>
-    lateinit var profRef: DatabaseReference
+    lateinit var atteDays: ArrayList<String>
     lateinit var specialityInput: TextInputLayout
     private lateinit var autocompleteSpeciality: AutoCompleteTextView
     private lateinit var autocompleteProfessional: AutoCompleteTextView
     lateinit var layoutProfessionalInput: LinearLayout
     private lateinit var textCurrentMonth: TextView
     private lateinit var calendarConstraintLayout: ConstraintLayout
+    private lateinit var calendarConstraintLayoutRV: ConstraintLayout
     lateinit var prevButton: Button
     lateinit var nextButton: Button
     lateinit var showAppointmentsLy: ConstraintLayout
     lateinit var professionalUid: String
 
-
+    private val newAppointmentViewModel by lazy { ViewModelProviders.of(this).get(NewAppointmentViewModel::class.java) }
 
     //variables de calendario
     private val lastDayInCalendar = Calendar.getInstance(Locale("ES", "ar"))
@@ -89,48 +97,45 @@ class NewAppointment : Fragment() {
 
         _binding = FragmentNewAppointmentBinding.inflate(inflater, container, false)
         calendarConstraintLayout = binding.calendarConstraintLayout
+        calendarConstraintLayoutRV = binding.calendarRecyclerViewCL
         calendarRecyclerView = binding.calendarRecyclerView
         showAppointmentsLy = binding.showAppointments
         layoutProfessionalInput = binding.professionalInput
 
         professionalUid = ""
 
-
         // escondemos contenederos que luego mostraremos
         layoutProfessionalInput.isVisible = false
+        calendarConstraintLayoutRV.isVisible = false
         calendarRecyclerView.isVisible = false
         calendarConstraintLayout.isVisible = false
         showAppointmentsLy.isVisible = false
 
-
-
-
-
-        // ejecutamos funcion para obtener especialidades
-        getSpecialityData() // obtenemos array de especialidades
-
         // realizamos las instancias para autocomplete
-        specialityArrayName = arrayListOf<String?>()
-        specialtyDataArray = arrayListOf<SpecialtyData>()
+        specialityArrayName = arrayListOf<String>()
         professionalArrayName = arrayListOf<String?>()
-        atteDays =  arrayListOf<String?>()
+        professionalArrayInfo = arrayListOf<NewAppointmentProfessionalData>()
+        atteDays =  arrayListOf<String>()
         specialityInput = binding.newAppointmentSpeciality
+
+        observeSpeciality() // observamos las especialidades de nuestro modelo para utilizarlos en las acciones del usuario
 
         // INPUT ESPECIALIDADES
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, specialityArrayName) // creamos adaptador para el array de especialiades
         autocompleteSpeciality = binding.autoCompleteSpeciality // instanciamos el autocomplete de especialidades
         autocompleteSpeciality.setAdapter(arrayAdapter) // pasamos el adaptador
-
         autocompleteProfessional = binding.autoCompleteProfessional // instanciamos el contenedor del input para los professionales.
 
         autocompleteSpeciality.setOnItemClickListener { adapterView, view, i, l -> //seteamos un click listener para encontrar el valor seleccionado
+            layoutProfessionalInput.isVisible = false
             professionalArrayName.clear() // antes que nada limpiamos el array para que no se acumulen professionales
             val value: String = specialityArrayName[i].toString().lowercase() // con la posicion del array lo buscamos y lo pasamos en minusculas
-            getProfessionalUid(value)  // corremos funcion para llenar el array de profesionales y mostramos el mismo input
+            observeProfessionals(value)
             val professionalArrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, professionalArrayName)// creamos el adaptador y se lo pasamos
             autocompleteProfessional.setAdapter(professionalArrayAdapter)
             if (showAppointmentsLy.isVisible){
                 calendarConstraintLayout.isVisible = false
+                calendarConstraintLayoutRV.isVisible = false
                 calendarRecyclerView.isVisible = false
                 showAppointmentsLy.isVisible = false
             }
@@ -138,11 +143,35 @@ class NewAppointment : Fragment() {
             layoutProfessionalInput.isVisible = true // hacemos que el contenedor con el input sea visible
             layoutProfessionalInput.animate()
                 .alpha(1f)
-                .setDuration(500)
+                .setDuration(750)
                 .setListener(null)
+
+
         }
 
         autocompleteProfessional.setOnItemClickListener{ adapterView, view, i, l ->
+            val profName: String = professionalArrayName[i].toString()
+            var profId: NewAppointmentProfessionalData = professionalArrayInfo[i]
+            for (i in professionalArrayInfo) {
+                if (i.name == profName){
+                    profId = i
+                }
+            }
+            Log.d("TRUE DAYS",professionalArrayInfo.toString())
+            val selectedAtteDays: AtteDays = profId.atteDays
+
+            Log.d("TRUE DAYS",selectedAtteDays.toString())
+            atteDays.clear()
+            if (selectedAtteDays.dom) {atteDays.add("Sun")}else{atteDays.add("null")}
+            if (selectedAtteDays.lun) {atteDays.add("Mon")}else{atteDays.add("null")}
+            if (selectedAtteDays.mar) {atteDays.add("Tue")}else{atteDays.add("null")}
+            if (selectedAtteDays.mie) {atteDays.add("Wed")}else{atteDays.add("null")}
+            if (selectedAtteDays.jue) {atteDays.add("Thu")}else{atteDays.add("null")}
+            if (selectedAtteDays.vie) {atteDays.add("Fri")}else{atteDays.add("null")}
+            if (selectedAtteDays.sab) {atteDays.add("Sat")}else{atteDays.add("null")}
+            Log.d("ATTE", atteDays.toString())
+
+
             if (showAppointmentsLy.isVisible){
                 showAppointmentsLy.isVisible = false
             }
@@ -150,17 +179,27 @@ class NewAppointment : Fragment() {
             calendarConstraintLayout.isVisible = true
             calendarRecyclerView.alpha = 0f
             calendarRecyclerView.isVisible = true
+            calendarConstraintLayoutRV.alpha = 0f
+            calendarConstraintLayoutRV.isVisible = true
 
             calendarConstraintLayout.animate()
                 .alpha(1f)
-                .setDuration(500)
+                .setDuration(750)
                 .setListener(null)
 
             calendarRecyclerView.animate()
                 .alpha(1f)
-                .setDuration(500)
+                .setDuration(750)
                 .setListener(null)
 
+            calendarConstraintLayoutRV.animate()
+                .alpha(1f)
+                .setDuration(1000)
+                .setListener(null)
+
+
+            setUpCalendar(null,atteDays)
+            calendarRecyclerView.smoothScrollToPosition(selectedDay)
 
         }
 
@@ -173,19 +212,17 @@ class NewAppointment : Fragment() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(calendarRecyclerView)
 
+
+
         lastDayInCalendar.add(Calendar.MONTH, 2)
 
-
-
-
-        setUpCalendar()
-
+        setUpCalendar(null,atteDays)
 
         prevButton.setOnClickListener{
             if(cal.after(currentDate)) {
                 cal.add(Calendar.MONTH, -1)
                 if(cal == currentDate) {
-                    setUpCalendar()
+                    setUpCalendar(null,atteDays)
                     calendarRecyclerView.layoutManager!!.scrollToPosition(0)
                 }
                 else
@@ -195,86 +232,48 @@ class NewAppointment : Fragment() {
         nextButton.setOnClickListener{
             if(cal.before(lastDayInCalendar)) {
                 cal.add(Calendar.MONTH, 1)
-                setUpCalendar(changeMonth = cal)
+                setUpCalendar(changeMonth = cal, atteDays)
                 calendarRecyclerView.smoothScrollToPosition(0)
             }
         }
 
 
-
-
-
         return binding.root
     }
 
-    // funcion buscar professionales por UID, usa INNER JOIN
-    private fun getProfessionalUid(speciality:String) {  // pasamos la especialidad en la cual queremos encontrar professionales
-        val path: String = "specialities/$speciality/professionals" // creamos el path
-        dbRef = FirebaseDatabase.getInstance().getReference(path) // creamos la instancia con ese path
-        dbRef.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) { //hacemos snapshot a los professionales de esa especialidad
-                if (snapshot.exists()){
-                    for (uidSnapshot in snapshot.children){ // en este bucle:
-                        val uid = uidSnapshot.getValue<String>() // obtendremos los valores uid dentro del nodo professionals
-                        professionalUid = uid.toString()
-                        profRef = FirebaseDatabase.getInstance().getReference("users/professionals/$uid") // los buscaremos en el nodo user/professionals
-                        profRef.addValueEventListener(object: ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                if (snapshot.exists()){
-                                    populateAtteDays(professionalUid)
-                                    val professional: ProfessionalData? = snapshot.getValue(ProfessionalData::class.java)
-                                    val name = professional?.name.toString() // y obtendremos su nombre
-                                    professionalArrayName.add(name) // lo anadiremos a este array
-                                }
-                            }
-                            override fun onCancelled(error: DatabaseError) {
-                                TODO("Not yet implemented")
-                            }
-                        })
-                    }
-                }
-                else {
-//                    debemos implmementar funcion que avise que no hay profesionales para esa especialidad.
-                    Toast.makeText(context, "SNAPSHOT VACIO", Toast.LENGTH_SHORT).show() // si no hay professionales
-                }
+    @SuppressLint("NotifyDataSetChanged", "FragmentLiveDataObserve")
+    fun observeSpeciality() {
+        newAppointmentViewModel.fetchAppointmentSpeciality().observe(this, androidx.lifecycle.Observer {
+            for (i in it){
+
+                specialityArrayName.add(i)
             }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+        })
+    }
+    @SuppressLint("NotifyDataSetChanged", "FragmentLiveDataObserve")
+    fun observeProfessionals(speciality: String) {
+        newAppointmentViewModel.fetchAppointmentProfessionals(speciality).observe(this, androidx.lifecycle.Observer {
+            for (i in it){
+                professionalArrayName.add(i.name)
+                professionalArrayInfo.add(i)
             }
         })
     }
 
-    // buscamos en la base de datos las especialidades
 
-    private fun getSpecialityData() {
-        dbRef = FirebaseDatabase.getInstance().getReference("specialities")
-        dbRef.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    for (specialitySnapshot in snapshot.children){
-                        val specialities = specialitySnapshot.getValue(SpecialtyData::class.java)
-                        specialityArrayName.add(specialities!!.name)
-//                        specialityArray.add(specialities!!)
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
 
-    private fun setUpCalendar(changeMonth: Calendar? = null) {
+    private fun setUpCalendar(changeMonth: Calendar? = null, _atteDays: ArrayList<String> = arrayListOf()) {
         // primera parte
         textCurrentMonth.text = sdf.format(cal.time).capitalize()
         val timetext: String = sdf.format(cal.time)
-        Log.i("COMPILACION", "++++++$timetext")
         val monthCalendar = cal.clone() as Calendar
         val maxDaysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         selectedDay =
             when {
-                changeMonth != null -> changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
+                changeMonth != null ->
+                    changeMonth.getActualMinimum(Calendar.DAY_OF_MONTH)
+
                 else -> currentDay
             }
         selectedMonth =
@@ -297,6 +296,7 @@ class NewAppointment : Fragment() {
 
 
 
+
         while (dates.size < maxDaysInMonth){
             val tamanoArray: String = dates.size.toString()
 
@@ -314,7 +314,8 @@ class NewAppointment : Fragment() {
         // tercera parte
         val context_: Context = requireContext()
         calendarRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val calendarAdapter = HorizontalCalendarAdapter(context_, dates, currentDate, changeMonth)
+        val calendarAdapter = HorizontalCalendarAdapter(context_, dates, currentDate, changeMonth, _atteDays)
+
         calendarRecyclerView.adapter = calendarAdapter
 
         when{
@@ -325,53 +326,20 @@ class NewAppointment : Fragment() {
 
         calendarAdapter.setOnItemClickListener(object: HorizontalCalendarAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
+                val clickCalendar = Calendar.getInstance()
+                clickCalendar.time = dates[position]
+                selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
                 showAppointmentsLy.alpha = 0f
                 showAppointmentsLy.isVisible = true
                 showAppointmentsLy.animate()
                     .alpha(1f)
-                    .setDuration(500)
+                    .setDuration(750)
                     .setListener(null)
-                val clickCalendar = Calendar.getInstance()
-                clickCalendar.time = dates[position]
-                selectedDay = clickCalendar[Calendar.DAY_OF_MONTH]
+
             }
 
         })
 
     }
-
-    private fun populateAtteDays(uid: String) {
-        atteDays.clear()
-        dbRef = FirebaseDatabase.getInstance().getReference("users/professionals/$uid/atteDays")
-        dbRef.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var position: Int = 0;
-                for (daySnapshot in snapshot.children) {
-                    if (snapshot.value == true){
-                        val weekDay:String = snapshot.key.toString()
-                        Log.v("ATTEDAYS", "###### $weekDay")
-                        if (position <= 6) {
-                            atteDays[position] = weekDay
-                            position++
-                        }
-                        else {
-                            atteDays[position] = "null"
-                            position++
-                        }
-                    }
-
-                }
-                Log.v("ATTEDAYS", "###### $atteDays")
-
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                throw databaseError.toException()
-            }
-        })
-
-    }
-
-
-
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.NewAppointment"
+    tools:context=".newappointment.ui.NewAppointment"
     android:fitsSystemWindows="true"
     android:layout_marginTop="10dp">
 
@@ -233,33 +233,71 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/calendar_recycler_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/calendar_recycler_view_CL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendar_constraint_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendar_constraint_layout" />
+            app:layout_constraintEnd_toEndOf="parent">
+            <TextView
+                android:id="@+id/calendarLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="center"
+                android:text="@string/chevron_left"
+                android:textColor="@color/Secondary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/calendar_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layoutAnimation="@anim/calendar_layout_animation"
+                app:layout_constraintEnd_toStartOf="@+id/calendarRight"
+                app:layout_constraintStart_toEndOf="@+id/calendarLeft"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/calendarRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:gravity="center"
+                android:text="@string/chevron_right"
+                android:textColor="@color/Secondary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/show_appointments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/shape_toolbar02"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintTop_toBottomOf="@id/calendar_recycler_view">
+            app:layout_constraintTop_toBottomOf="@id/calendar_recycler_view_CL">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/appointmentTimeRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginVertical="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -270,17 +308,17 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@color/Secondary"
                 android:background="@drawable/shape_button_cancel"
                 android:fontFamily="@font/rubik_regular"
                 android:text="Confirmar Turno"
+                android:textColor="@color/Secondary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/White"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintWidth_percent=".6"/>
+                app:layout_constraintWidth_percent=".6" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

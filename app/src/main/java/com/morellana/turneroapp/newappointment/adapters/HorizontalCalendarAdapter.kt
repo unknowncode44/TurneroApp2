@@ -1,33 +1,28 @@
-package com.morellana.turneroapp.adapters
+package com.morellana.turneroapp.newappointment.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
-import android.util.Log.ASSERT
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.morellana.turneroapp.R
-import com.morellana.turneroapp.dataclass.AtteDays
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HorizontalCalendarAdapter(private val context: Context, private val data: ArrayList<Date>, currentDate: Calendar, changeMonth: Calendar?): RecyclerView.Adapter<HorizontalCalendarAdapter.CalendarViewHolder>() {
+class HorizontalCalendarAdapter(private val context: Context, private val data: ArrayList<Date>, currentDate: Calendar, changeMonth: Calendar?, private val atteDays: ArrayList<String>): RecyclerView.Adapter<HorizontalCalendarAdapter.CalendarViewHolder>() {
     private var mListener: OnItemClickListener? = null // lo usaremos para los eventos de click en las celdas de los dias
     private var index = 0 // definimos el index en -1 porque...
     lateinit var db: DatabaseReference;
     private var selectCurrentDate: Boolean = true //
-    private var atteDays = arrayListOf("Mon","Tue","Fri", "Sat", null, null, null)
     private val currentMonth = currentDate[Calendar.MONTH] // mes actual
     private val currentYear = currentDate[Calendar.YEAR] // anio actual
     private val currentDay = currentDate[Calendar.DAY_OF_MONTH] // dia actual
@@ -50,13 +45,13 @@ class HorizontalCalendarAdapter(private val context: Context, private val data: 
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalCalendarAdapter.CalendarViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(context)
         return CalendarViewHolder(inflater.inflate(R.layout.custom_calendar_day, parent, false), mListener!!)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onBindViewHolder(holder: HorizontalCalendarAdapter.CalendarViewHolder, @SuppressLint(
+    override fun onBindViewHolder(holder: CalendarViewHolder, @SuppressLint(
         "RecyclerView"
     ) position: Int) {
 
@@ -131,9 +126,7 @@ class HorizontalCalendarAdapter(private val context: Context, private val data: 
                             else {
                                 makeItemDisabled(holder)
                             }
-
                         }
-
                     }
                 } else makeItemDisabled(holder)
             else makeItemDisabled(holder)
@@ -162,14 +155,15 @@ class HorizontalCalendarAdapter(private val context: Context, private val data: 
         mListener = listener
     }
 
-    private fun makeItemDisabled(holder: HorizontalCalendarAdapter.CalendarViewHolder) {
+    private fun makeItemDisabled(holder: CalendarViewHolder) {
+
         holder.linearLayout.elevation = 10.0f
         holder.txtDay.setTextColor(ContextCompat.getColor(context, R.color.LightGrey))
         holder.txtDayInWeek.setTextColor(ContextCompat.getColor(context, R.color.LightGrey))
         holder.linearLayout.setBackgroundColor(Color.WHITE)
         holder.linearLayout.isEnabled = false
     }
-    private fun makeItemSelected(holder: HorizontalCalendarAdapter.CalendarViewHolder) {
+    private fun makeItemSelected(holder: CalendarViewHolder) {
         holder.linearLayout.elevation = 10.0f
         holder.txtDay.setTextColor(ContextCompat.getColor(context, R.color.White))
         holder.txtDayInWeek.setTextColor(ContextCompat.getColor(context, R.color.White))
@@ -180,7 +174,7 @@ class HorizontalCalendarAdapter(private val context: Context, private val data: 
         holder.sideBorderRight.setBackgroundColor(ContextCompat.getColor(context, R.color.Secondary))
     }
 
-    private fun makeItemDefault(holder: HorizontalCalendarAdapter.CalendarViewHolder) {
+    private fun makeItemDefault(holder: CalendarViewHolder) {
         holder.linearLayout.elevation = 10.0f
         holder.txtDay.setTextColor(ContextCompat.getColor(context, R.color.Secondary))
         holder.txtDayInWeek.setTextColor(ContextCompat.getColor(context, R.color.Secondary))

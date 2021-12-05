@@ -12,19 +12,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.SearchDoctor
 import com.morellana.turneroapp.dashboarduser.adapter.ProfessionalAdapter
 import com.morellana.turneroapp.dashboarduser.adapter.OnlineDoctorsAdapter
 import com.morellana.turneroapp.dashboarduser.adapter.SpecialtyAdapter
-import com.morellana.turneroapp.dashboarduser.dataclass.SpecialtyData
 import com.morellana.turneroapp.dashboarduser.model.onlinedoctor.OnlineDoctorViewModel
 import com.morellana.turneroapp.dashboarduser.model.professional.ProfessionalViewModel
 import com.morellana.turneroapp.dashboarduser.model.specialty.SpecialtyViewModel
 import com.morellana.turneroapp.databinding.FragmentDashboardUserBinding
-import com.morellana.turneroapp.ui.MakeAppointments
-import com.morellana.turneroapp.ui.NewAppointment
+import com.morellana.turneroapp.makeappointments.ui.MakeAppointments
+import com.morellana.turneroapp.newappointment.ui.NewAppointment
 
 class DashboardUserFragment : Fragment() {
 

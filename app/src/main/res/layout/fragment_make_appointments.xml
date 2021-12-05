@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MakeAppointments"
+    tools:context=".makeappointments.ui.MakeAppointments"
     android:fitsSystemWindows="true"
     android:layout_marginTop="10dp">
 
@@ -191,6 +191,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/weekdays"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -242,6 +243,94 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Do" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/sinceUntil"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weekdays">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:text="Desde:"/>
+            <Spinner
+                android:id="@+id/since_hour"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/edit_text_shape"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:text="Hasta:"/>
+            <Spinner
+                android:id="@+id/until_hour"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/edit_text_shape"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/durationInterval"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sinceUntil">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:text="Turnos de:"/>
+            <Spinner
+                android:id="@+id/appointmentDuration"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/edit_text_shape"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center"
+                android:text="Intervalo"/>
+            <Spinner
+                android:id="@+id/appointmentInterval"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/edit_text_shape"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnCreateAppointmentsLL"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/durationInterval"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <Button
+                android:id="@+id/btnCreateAppointments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_button01"
+                android:text="CREAR TURNOS"/>
+
+
         </LinearLayout>
 
 
