@@ -14,6 +14,7 @@ import com.google.firebase.database.ktx.getValue
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.databinding.FragmentMakeAppointmentsBinding
 import com.morellana.turneroapp.dashboarduser.dataclass.SpecialtyData
+import com.morellana.turneroapp.makeappointments.dataclass.AvailableAppointment
 import com.morellana.turneroapp.makeappointments.dataclass.ProfessionalInfoDataClass
 import com.morellana.turneroapp.newappointment.dataclass.AtteDays
 import java.time.DayOfWeek
@@ -21,6 +22,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjuster
 import java.time.temporal.TemporalAdjusters
 
 class MakeAppointments : Fragment() {
@@ -205,15 +207,17 @@ class MakeAppointments : Fragment() {
             val d = appointmentDuration.selectedItemPosition
             val sinceTimeText = timeArray[s].toString()
             val untilTimeText = timeArray[u].toString()
-            val selectedInterval = intervalArray[i].toInt()
-            val selectedDuration = durationArray[i].toInt()
+            val selectedInterval = intervalArray[i].toLong()
+            val selectedDuration = durationArray[i].toLong()
             var sinceLocalTime = LocalTime.parse(sinceTimeText)
             var untilLocalTime = LocalTime.parse(untilTimeText)
             var currentDate = LocalDate.now()
             var dayOfWeek: String = currentDate.dayOfWeek.toString()
             var capitalizeAtteDays = arrayListOf<String>()
             var atteTime: ArrayList<String> = arrayListOf<String>()
-            var countTime = sinceLocalTime
+            var availableAppointments: ArrayList<AvailableAppointment> = arrayListOf<AvailableAppointment>()
+            var atteTimeDBObject = AvailableAppointment()
+            var countTime: LocalTime
             if (atteDays.lun) { capitalizeAtteDays.add("MONDAY") }
             if (atteDays.mar) { capitalizeAtteDays.add("TUESDAY") }
             if (atteDays.mie) { capitalizeAtteDays.add("WEDNESDAY") }
@@ -222,12 +226,55 @@ class MakeAppointments : Fragment() {
             if (atteDays.sab) { capitalizeAtteDays.add("SATURDAY") }
             if (atteDays.dom) { capitalizeAtteDays.add("SUNDAY") }
             for (item in capitalizeAtteDays) {
+                println(item)
+                if(dayOfWeek == item) {
+                    var weekCounter = 1
+                    var date: LocalDate = currentDate
+                    while (weekCounter <= 4) {
+                        countTime = sinceLocalTime
+                        atteTime.clear()
+                        while (countTime <= untilLocalTime){
+                            atteTime.add(countTime.toString())
+                            countTime = countTime.plusMinutes(selectedDuration+selectedInterval)
+                        }
+
+                        atteTimeDBObject.date = date.toString()
+                        atteTimeDBObject.timeList = atteTime
+                        var dbRef = FirebaseDatabase.getInstance().getReference("users/professionals/$selectedProfessionalUid/AvailableAppointments/$date")
+                        dbRef.setValue(atteTimeDBObject)
+                        date = date.plusDays(7)
+                        availableAppointments.add(atteTimeDBObject)
+                        weekCounter++
+                    }
+
+                }
+                if (dayOfWeek != item){
+                    var date: LocalDate = currentDate.plusDays(1)
+                    var newWeekDay: String = date.dayOfWeek.toString()
+                    while (newWeekDay != item) {
+                        date.plusDays(1)
+                    }
+                    var weekCounter = 1
+                    while (weekCounter <= 4) {
+                        countTime = sinceLocalTime
+                        atteTime.clear()
+                        while (countTime <= untilLocalTime){
+                            atteTime.add(countTime.toString())
+                            countTime = countTime.plusMinutes(selectedDuration+selectedInterval)
+                        }
+                        atteTimeDBObject.date = date.toString()
+                        atteTimeDBObject.timeList = atteTime
+                        var dbRef = FirebaseDatabase.getInstance().getReference("users/professionals/$selectedProfessionalUid/AvailableAppointments/$date")
+                        dbRef.setValue(atteTimeDBObject)
+                        date = date.plusDays(7)
+                        availableAppointments.add(atteTimeDBObject)
+                        weekCounter++
+                    }
+
+                }
 
             }
 
-
-
-            println("####SINCE ----------> $capitalizeAtteDays")
         }
 
 
