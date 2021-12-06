@@ -1,6 +1,9 @@
 package com.morellana.turneroapp.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,12 +29,18 @@ import com.morellana.turneroapp.dataclass.UserInfo
 import com.morellana.turneroapp.dialogs.DialogMessageSimple
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.media.ThumbnailUtils
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
+import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
 import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.*
 
+//Creamos las variables para navegar entre los resultados de las actividades
+const val GALLERY = 3000
+const val CAMERA = 3001
+//Variable de permisos
+private const val PERMISSION_REQUEST = 10
 
 //Implementamos la clase para el paso de datos
 class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
@@ -40,25 +49,16 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private val binding get() = _binding!!
     private lateinit var db: DatabaseReference
     private lateinit var auth: FirebaseAuth
-    private lateinit var storage: FirebaseStorage
 
-    //Image Crop
-    //-------------------------------------------------------------------------------------
-    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>(){
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                .setAspectRatio(16, 16)
-                .getIntent(context)
-        }
+    //La lista de los permisos que maneja la APP
+    private var permission = arrayOf(android.Manifest.permission.CAMERA,
+        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            return CropImage.getActivityResult(intent).uri
-        }
+    private var imageUri: Uri? = null
 
-    }
-    //-------------------------------------------------------------------------------------
-
-    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
+    //Variables con textos
+    val tag_permission = getText(R.string.tag_permission)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +72,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding =  FragmentMyAccountBinding.inflate(inflater, container, false)
 
@@ -108,16 +108,16 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //El boton de logout y su doble funcion
         binding.logout.setOnClickListener {
             when (binding.logout.text){
-                "Cerrar Sesion" -> {
+                getText(R.string.log_out) -> {
                     logOut()
                 }
-                "Cambiar contraseña" -> {
+                getText(R.string.change_password) -> {
                     when (binding.pass.isEnabled){
                         true -> {
                             //Comparamos que la contraseña cumpla las condiciones
                             if (binding.pass.text!!.length >= 6) {
                                 if (binding.pass.text.toString() == binding.repPass.text.toString()){
-                                    newPass(user)
+                                    newPass()
                                 } else {
                                     Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
                                 }
@@ -138,7 +138,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //Modificamos los datos del usuario
         binding.ok.setOnClickListener {
             //Llamar a cuadro de dialogo
-            updateData(user,
+            updateData(
                 binding.email.text.toString(),
                 binding.lastName.text.toString(),
                 binding.name.text.toString(),
@@ -147,49 +147,155 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             back(user)
         }
 
-        //Image Crop
-        //-------------------------------------------------------------------------------------
-        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract){
-            it?.let { uri ->
-                //Cargamos la imagen por su URI - Uniform Resource Identifier,
-                // “Identificador uniforme de recursos” (ubicacion)
-                binding.imageProfile.setImageURI(uri)
-                uploadImage(uri)
-                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
-                saveToInternalStorage(bitmap, requireContext())
-            }
-        }
-        //-------------------------------------------------------------------------------------
-
         //Cargamos una foto de la galeria
         binding.add.setOnClickListener {
-
-            //Image Crop
-            cropActivityResultLauncher.launch(null)
-
+            if (checkPermission(requireContext(), permission)){
+                        Log.i(tag_permission.toString(), "TODOS LOS PERMISOS ACEPTADOS")
+                Toast.makeText(context, "asfdaf", Toast.LENGTH_LONG).show()
+                        showPictureDialog()
+                    } else {
+                //Caso contrario, pide los permisos nuevamente
+                requestPermissions(permission, PERMISSION_REQUEST)
+                Log.e(tag_permission.toString(), "SE PIDEN LOS PERMISOS NUEVAMENTE")
+            }
         }
 
         return binding.root
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST){
+            var allSuccess = true
+            for (i in permissions.indices){
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED){
+                    allSuccess = false
+                    var requestAgain = shouldShowRequestPermissionRationale(permissions[i])
+                    if (requestAgain){
+                        Toast.makeText(context, getText(R.string.denied_permission), Toast.LENGTH_LONG).show()
+                    } else {
+                        Log.e(tag_permission.toString(),
+                            getText(R.string.denied_permission).toString()
+                        )
+                        Toast.makeText(context, getText(R.string.permission_denied_need_config), Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            if (allSuccess){
+                showPictureDialog()
+            }
+        }
+    }
+
+    @SuppressLint("WrongConstant")
+    fun checkPermission(context: Context, permissionArray: Array<String>): Boolean{
+        var allSuccess = true
+        for (i in permissionArray.indices){
+            if (activity?.checkCallingOrSelfPermission(permissionArray[i]) == PackageManager.PERMISSION_DENIED){
+                allSuccess = false
+            }
+        }
+        return allSuccess
+    }
+
+    //Funcion para abrir la galeria y obtener la foto
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA) {
+                //Corresponde al CropImage Activity ---------------------------------
+                CropImage.activity(imageUri)
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+                    .setGuidelines(CropImageView.Guidelines.OFF)
+                    .setAspectRatio(16, 16)
+                    .setAutoZoomEnabled(false)
+                    .start(requireContext(), this@MyAccountFragment)
+                //------------------------------------------------------------------
+            }
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
+                //Corresponde al CropImage Activity ---------------------------------
+                CropImage.activity(data?.data)
+                    .setCropShape(CropImageView.CropShape.RECTANGLE)
+                    .setGuidelines(CropImageView.Guidelines.OFF)
+                    .setAspectRatio(16, 16)
+                    .setAutoZoomEnabled(false)
+                    .start(requireContext(), this@MyAccountFragment)
+                //------------------------------------------------------------------
+            }
+
+        }
+
+        //Corresponde al CropImage Activity ------------------------------------------------------------------
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            try {
+                val resultUri = result.uri //Tomamos el resultado de la imagen, lo pasamos a uri
+                val bitmap = requireActivity().contentResolver.openInputStream(resultUri)
+                val photoBitmap = BitmapFactory.decodeStream(bitmap)
+                binding.imageProfile.setImageBitmap(photoBitmap)
+                uploadImage(resultUri)
+                val bitmap2: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, resultUri)
+                saveToInternalStorage(bitmap2, requireContext())
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            }
+        }
+        else {
+            return
+        }
+        //---------------------------------------------------------------------------------------------------
+    }
+
+    //El dialogo para seleccionar la imagen
+    private fun showPictureDialog() {
+        val pictureDialog = AlertDialog.Builder(context)
+        pictureDialog.setTitle("Selección")
+        val pictureDialogItems = arrayOf("Desde Galeria", "Desde Cámara")
+        pictureDialog.setItems(pictureDialogItems
+        ) { _, which ->
+            when (which) {
+                0 -> choosePhotoFromGallary()
+                1 -> takePhotoFromCamera()
+            }
+        }
+        pictureDialog.show()
+    }
+
+    private fun choosePhotoFromGallary() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //Instanciamos el intent para tomar del almacenamiento
+        intent.type = "image/*" //Los tipos de valores que pude tomar
+        requireActivity().startActivityFromFragment(this, intent, GALLERY) //Lanzamos la actividad
+    }
+
+    private fun takePhotoFromCamera() {
+        val intent = Intent(ACTION_IMAGE_CAPTURE) //Instanciamos el intent de la camara
+        val title = "image.jpg"
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, title)
+            put(MediaStore.Images.Media.DESCRIPTION, "Image capture by camera")
+        }
+        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) //Nos pide unos valores que se cargan en Values
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri) //Ponemos la imagen en un extra
+        requireActivity().startActivityFromFragment(this, intent, CAMERA) //Lanzamos la actividad
     }
 
     //Sube la imagen original al servidor
     private fun uploadImage(path: Uri?) {
         val user: String = auth.currentUser?.uid.toString()
         val storage = FirebaseStorage.getInstance().getReference("users")
-        //Obtenemos la imagen de la ubicacion
-        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
+        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path) //Obtenemos la imagen de la ubicacion que pasamos anteriormente
         val baos = ByteArrayOutputStream()
-        //Convertimos la imagen a byte
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        //La almacenamos
-        val data = baos.toByteArray()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) //Convertimos la imagen a byte
+        val data = baos.toByteArray() //La almacenamos
         val imageNoResized = storage.child(user)
         val uploadTask = imageNoResized.putBytes(data)
         //La subimos
         uploadTask.addOnSuccessListener{
-            Toast.makeText(context, "Joya", Toast.LENGTH_SHORT).show()
+            TODO("Buscar la forma de colocar un cartel de carga")
         } .addOnFailureListener {
-            Toast.makeText(context, "Mal", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -229,30 +335,28 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
     //Obtenemos la imagen creada tipo thumbnail, para mejorar el tiempo de carga
     private fun pickImgFromLocal(context: Context){
-
-        val name = auth.currentUser?.uid
+        val name = auth.currentUser?.uid //Le colocamos el nombre del usuario a la imagen en miniatura
         val cw = ContextWrapper(context.applicationContext)
-        val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE)
-        Log.d("PATH", directory.path)
-        val mypath = File(directory, "$name.jpg")
-        val bitmap = BitmapFactory.decodeFile(mypath.absolutePath)
+        val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE) //Asignamos un directorio en los archivos de la app
+        Log.d("PATH", directory.path) //Mostramos el directorio en el Logcat
+        val mypath = File(directory, "$name.jpg") //Creamos el archivo temporal
+        val bitmap = BitmapFactory.decodeFile(mypath.absolutePath) //Colocamos la imagen en el archivo
         if (bitmap != null){
-            binding.imageProfile.setImageBitmap(bitmap)
+            binding.imageProfile.setImageBitmap(bitmap) //Si la imagen existe, se coloca
         } else {
-            pickImgFromServer()
+            pickImgFromServer() //Caso contrario, se saca de la bd
         }
     }
 
     //Carga la imagen desde el servidor (Su utilidad es para cuando abramos la imagen)
     private fun pickImgFromServer() {
         val user: String = auth.currentUser?.uid.toString()
-        val storageRef = FirebaseStorage.getInstance().reference.child("users/" + user + "noresized")
-        //Creamos un archivo temporal
-        val localFile = File.createTempFile("tempImage", "jpg")
+        val storageRef = FirebaseStorage.getInstance().reference.child("users/$user") //Le asignamos como nombre la uid del usuario
+        val localFile = File.createTempFile("tempImage", "jpg") //Creamos un archivo temporal
         //Cargamos la imagen del storage en ese archivo temporal
         storageRef.getFile(localFile).addOnSuccessListener {
-            //Lo convertimos a bitmap
-            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath) //Lo convertimos a bitmap
+            saveToInternalStorage(bitmap, requireContext()) //Lo guardamos en el almacenamiento interno como thumbnail
         } .addOnFailureListener {
             Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
         }
@@ -265,14 +369,14 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         activity?.finish()
     }
 
-    private fun newPass(uid: String){
+    private fun newPass(){
         val user = FirebaseAuth.getInstance().currentUser
         val newPassword = binding.pass.text.toString()
         user!!.updatePassword(newPassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "User password updated.")
-                    Toast.makeText(context, "Se Cambio la Contraseña con exito", Toast.LENGTH_LONG)
+                    Toast.makeText(context, getText(R.string.password_changed), Toast.LENGTH_LONG)
                         .show()
                     binding.repPass.setText("")
                     db.child("pass").setValue(binding.pass.text.toString())
@@ -286,10 +390,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private fun modify(uid: String){
         binding.ok.animate().translationX(0f).alpha(1F).setDuration(500).setStartDelay(300).start()
         binding.containerGone.isVisible = true
-        binding.data.text = "Volver"
+        binding.data.text = getText(R.string.back)
         binding.data.backgroundTintList = resources.getColorStateList(R.color.colorAccent)
         binding.logout.backgroundTintList = resources.getColorStateList(R.color.Secondary)
-        binding.logout.text = "Cambiar contraseña"
+        binding.logout.text = getText(R.string.change_password)
         enabled()
         //Cuando finaliza la tarea, trae de nuevo los datos
         getInfo(uid)
@@ -299,10 +403,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private fun back(uid: String){
         binding.ok.animate().translationX(-500f).alpha(0F).setDuration(500).setStartDelay(300).start()
         binding.containerGone.isVisible = false
-        binding.data.text = "Modificar datos"
+        binding.data.text = getText(R.string.modify_data)
         binding.data.backgroundTintList = resources.getColorStateList(R.color.Secondary)
         binding.logout.backgroundTintList = resources.getColorStateList(R.color.colorAccent)
-        binding.logout.text = "Cerrar Sesion"
+        binding.logout.text = getText(R.string.log_out)
         noEnabled()
 
 
@@ -369,7 +473,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         }
     }
 
-    private fun updateData(uid: String, email: String, lastName: String, name: String, pass: String, phone: String){
+    private fun updateData(email: String, lastName: String, name: String, pass: String, phone: String){
         val data: Any = UserInfo(email, lastName, name, pass, phone)
         db.setValue(data)
             .addOnSuccessListener {

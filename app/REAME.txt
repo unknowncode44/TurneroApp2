@@ -80,3 +80,67 @@ La idea es:
 ¿Inconvenientes?
 1. Si cambia de usuario, carga siempre la misma foto de perfil ): -> la imagen deberia de tener como nombre la uid
 2. Si desinstala, y vuelve a instalar, la imagen desaparece -> cuando se llama la actividad, deberia descargar la imagen!
+
+IMAGE CROP DESCARTADO:
+
+//Variables universales:
+    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>(){
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .setAspectRatio(16, 16)
+                .getIntent(context)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent).uri
+        }
+
+    }
+
+    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
+
+//En el cuerpo
+cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract){
+            it?.let { uri ->
+                //Cargamos la imagen por su URI - Uniform Resource Identifier,
+                // “Identificador uniforme de recursos” (ubicacion)
+                binding.imageProfile.setImageURI(uri)
+                uploadImage(uri)
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+                saveToInternalStorage(bitmap, requireContext())
+            }
+        }
+
+//Se ejecuta
+cropActivityResultLauncher.launch(null)
+
+
+
+if (requestCode == PERMISSION_REQUEST){
+            var allSuccess = true
+//            for (i in permissions.indices){
+                if (activity?.checkCallingOrSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                    allSuccess = false
+                    var requestAgain = shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)
+                    if (requestAgain){
+                        Toast.makeText(context, "DENEGADA", Toast.LENGTH_LONG).show()
+                    } else {
+                        Log.e("PERMISOS", "PERMISOS DENEGADOS, NO SE PUEDE CONTINUAR")
+                        Toast.makeText(context, "No tiene los permisos suficientes para continuar, " +
+                                "vaya a configuración", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    allSuccess = true
+            }
+            if (allSuccess){
+                Log.i("PERMISOS", "PERMISOS CONCEDIDOS, CONTINUA")
+            }
+        }
+
+        var requestAgain = shouldShowRequestPermissionRationale(permissions[i])
+                            if (requestAgain){
+                                Toast.makeText(context, "DENEGADA", Toast.LENGTH_LONG).show()
+                            } else {
+                                Log.e("PERMISOS", "PERMISOS DENEGADOS, NO SE PUEDE CONTINUAR")
+                                Toast.makeText(context, "No tiene los permisos suficientes para continuar, " +
+                                        "vaya a configuración", Toast.LENGTH_LONG).show()

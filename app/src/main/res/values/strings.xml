@@ -51,4 +51,12 @@
     <string name="especialidad_hint">Elige especialidad</string>
     <string name="professional_hint">Elige Profesional</string>
     <string name="myAccount">Mis datos</string>
+    <string name="back">Volver</string>
+    <string name="change_password">Cambiar contraseña</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="modify_data">Modificar datos</string>
+    <string name="tag_permission">PERMISOS</string>
+    <string name="denied_permission">PERMISOS DENEGADOS</string>
+    <string name="permission_denied_need_config">No tiene los permisos suficientes para continuar, vaya a configuración</string>
+    <string name="password_changed">La contraseña se actualizo con éxito</string>
 </resources>
