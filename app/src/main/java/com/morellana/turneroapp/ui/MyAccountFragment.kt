@@ -57,9 +57,6 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
     private var imageUri: Uri? = null
 
-    //Variables con textos
-    val tag_permission = getText(R.string.tag_permission)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //lo que hacemos es animar el inflar y el desinflar
@@ -150,13 +147,13 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //Cargamos una foto de la galeria
         binding.add.setOnClickListener {
             if (checkPermission(requireContext(), permission)){
-                        Log.i(tag_permission.toString(), "TODOS LOS PERMISOS ACEPTADOS")
+                        Log.i("PERMISOS", "TODOS LOS PERMISOS ACEPTADOS")
                 Toast.makeText(context, "asfdaf", Toast.LENGTH_LONG).show()
                         showPictureDialog()
                     } else {
                 //Caso contrario, pide los permisos nuevamente
                 requestPermissions(permission, PERMISSION_REQUEST)
-                Log.e(tag_permission.toString(), "SE PIDEN LOS PERMISOS NUEVAMENTE")
+                Log.e("PERMISOS", "SE PIDEN LOS PERMISOS NUEVAMENTE")
             }
         }
 
@@ -174,7 +171,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
                     if (requestAgain){
                         Toast.makeText(context, getText(R.string.denied_permission), Toast.LENGTH_LONG).show()
                     } else {
-                        Log.e(tag_permission.toString(),
+                        Log.e("PERMISOS",
                             getText(R.string.denied_permission).toString()
                         )
                         Toast.makeText(context, getText(R.string.permission_denied_need_config), Toast.LENGTH_LONG).show()
