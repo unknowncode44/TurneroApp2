@@ -31,13 +31,13 @@ class DialogMessageSimple {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         //Guardo esta linea, Messirve
-        //dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
         dialog.setContentView(R.layout.dialog_alert_pass)
 
         val text: EditText = dialog.findViewById(R.id.pass)
         val btn: Button = dialog.findViewById(R.id.acept)
 
-        text.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+//        text.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
 
         btn.setOnClickListener {
             //Llamamos la funcion de la interfaz para comunicar los datos

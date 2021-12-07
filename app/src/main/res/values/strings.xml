@@ -59,4 +59,18 @@
     <string name="denied_permission">PERMISOS DENEGADOS</string>
     <string name="permission_denied_need_config">No tiene los permisos suficientes para continuar, vaya a configuración</string>
     <string name="password_changed">La contraseña se actualizo con éxito</string>
+    <string name="uploading_image">Cargando imágen</string>
+    <string name="upload_success">Carga con éxito</string>
+    <string name="failure_upload">Error al cargar</string>
+    <string name="select">Seleccionar</string>
+    <string name="from_gallery">Desde la galería</string>
+    <string name="from_camera">Desde la cámara</string>
+    <string name="password_mismatch">Las contraseñas no coinciden</string>
+    <string name="data_ok">Se actualizaron los datos</string>
+    <string name="data_error">Error al actualizar datos!</string>
+    <string name="password_short">Contraseña muy corta</string>
+    <string name="permissions_accepted">TODOS LOS PERMISOS ACEPTADOS</string>
+    <string name="permissions_request">SE PIDEN LOS PERMISOS NUEVAMENTE</string>
+    <string name="nothing_here">No hay nada por aquí...</string>
+    <string name="new_appointment"><u>Sacar turno</u></string>
 </resources>

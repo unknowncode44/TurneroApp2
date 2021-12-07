@@ -40,7 +40,6 @@ class MyAppointmentsAdapter(private val context: Context):  RecyclerView.Adapter
             currentItem.visibility = !currentItem.visibility
             notifyItemChanged(position)
         }
-
     }
 
     override fun getItemCount(): Int {

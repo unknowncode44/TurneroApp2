@@ -10,24 +10,17 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.morellana.turneroapp.R
 import com.morellana.turneroapp.databinding.FragmentMyAppointmentBinding
 import com.morellana.turneroapp.myappointment.model.MyAppointmentViewModel
 import com.morellana.turneroapp.myappointment.adapter.MyAppointmentsAdapter
-import com.morellana.turneroapp.myappointment.dataclass.AppointmentData
+import com.morellana.turneroapp.newappointment.ui.NewAppointment
 
 class MyAppointmentFragment : Fragment() {
 
     //Binding
     private var _binding: FragmentMyAppointmentBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var appointmentDataArrayList: ArrayList<AppointmentData>
-    private lateinit var appointmentRecyclerView: RecyclerView
-    private lateinit var currentUserUid: String
 
     //View Model
     private lateinit var adapter: MyAppointmentsAdapter
@@ -45,7 +38,7 @@ class MyAppointmentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentMyAppointmentBinding.inflate(inflater, container, false)
 
@@ -55,11 +48,19 @@ class MyAppointmentFragment : Fragment() {
 
         observeData()
 
+        binding.newAppontment.setOnClickListener {
+            val id: Int = (R.id.frag)
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(id, NewAppointment())?.addToBackStack(null)
+            transaction?.commit()
+        }
+
         return binding.root
     }
 
     @SuppressLint("NotifyDataSetChanged", "FragmentLiveDataObserve")
     fun observeData(){
+        binding.nullAppointment.visibility = View.GONE
         binding.shimmerViewContainer.startShimmer()
         viewModel.fetchAppointmentData().observe(this, Observer {
             binding.shimmerViewContainer.stopShimmer()
@@ -67,40 +68,11 @@ class MyAppointmentFragment : Fragment() {
             binding.shimmerViewContainer.visibility = View.GONE
             adapter.setListData(it)
             adapter.notifyDataSetChanged()
+            if (adapter.itemCount == 0){
+                binding.nullAppointment.visibility = View.VISIBLE
+                binding.myAppointments.visibility = View.INVISIBLE
+            }
         })
+
     }
-
-    //Funcionalidad descartada; se aplica en la clase "Repo" de esta actividad
-
-//    private fun getAppointmentData(uid: String) {
-//        dbRef = FirebaseDatabase.getInstance().getReference("users/users/$uid/appointments")
-//        dbRef.addValueEventListener(object: ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()){
-//
-//                    for (appointmentSnapshot in snapshot.children){
-//                        val appointments = appointmentSnapshot.getValue(AppointmentData::class.java)
-//
-//                        appointmentDataArrayList.add(appointments!!)
-//                    }
-////                    binding.shimmerViewContainer.stopShimmer()
-//                    binding.shimmerViewContainer.visibility = View.GONE
-//
-//                    appointmentRecyclerView.adapter = MyAppointmentsAdapter(appointmentDataArrayList)
-//                }
-//
-//                //Si no existe ningun snapshot, muestra el mensaje
-//                if (appointmentRecyclerView.adapter?.itemCount == 0){
-//                    Toast.makeText(context, "No hay turnos disponibles", Toast.LENGTH_SHORT).show()
-////                    binding.shimmerViewContainer.stopShimmer()
-//                    binding.shimmerViewContainer.visibility = View.GONE
-//                    binding.nullAppointment.visibility = View.VISIBLE
-//                }
-//            }
-//            override fun onCancelled(error: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//        })
-//    }
-
 }

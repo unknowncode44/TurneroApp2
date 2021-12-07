@@ -3,6 +3,7 @@ package com.morellana.turneroapp.ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -84,6 +85,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         pickImgFromLocal(requireContext())
 
         //Escondemos el contenedor
+        binding.containerGone.alpha = 0f
         binding.containerGone.isVisible = false
         //Desplazamos el boton
         binding.ok.translationX = -500f
@@ -91,10 +93,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //Abrimos el menu de cambio de datos
         binding.data.setOnClickListener {
             when (binding.data.text){
-                "Modificar datos" ->{
+                getText(R.string.modify_data) ->{
                     modify(user)
                 }
-                "Volver" ->{
+                getText(R.string.back) ->{
                     back(user)
                 }
             }
@@ -102,6 +104,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
         //Instanciamos la clase para mostrarla
         val dialog = DialogMessageSimple()
+
         //El boton de logout y su doble funcion
         binding.logout.setOnClickListener {
             when (binding.logout.text){
@@ -116,10 +119,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
                                 if (binding.pass.text.toString() == binding.repPass.text.toString()){
                                     newPass()
                                 } else {
-                                    Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, getText(R.string.password_mismatch), Toast.LENGTH_LONG).show()
                                 }
                             } else {
-                                Toast.makeText(context, "Contraseña muy corta", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, getText(R.string.password_short), Toast.LENGTH_LONG).show()
                             }
                         }
                         false -> {
@@ -147,19 +150,20 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         //Cargamos una foto de la galeria
         binding.add.setOnClickListener {
             if (checkPermission(requireContext(), permission)){
-                        Log.i("PERMISOS", "TODOS LOS PERMISOS ACEPTADOS")
-                Toast.makeText(context, "asfdaf", Toast.LENGTH_LONG).show()
+                        Log.i("PERMISSIONS", getText(R.string.permissions_accepted).toString())
                         showPictureDialog()
                     } else {
                 //Caso contrario, pide los permisos nuevamente
                 requestPermissions(permission, PERMISSION_REQUEST)
-                Log.e("PERMISOS", "SE PIDEN LOS PERMISOS NUEVAMENTE")
+                Log.e("PERMISSIONS", getText(R.string.permissions_request).toString())
             }
         }
 
         return binding.root
     }
 
+//Manejo de permisos de la app
+//---------------------------------------------------------------------------------------------------------------------
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST){
@@ -171,7 +175,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
                     if (requestAgain){
                         Toast.makeText(context, getText(R.string.denied_permission), Toast.LENGTH_LONG).show()
                     } else {
-                        Log.e("PERMISOS",
+                        Log.e("PERMISSIONS",
                             getText(R.string.denied_permission).toString()
                         )
                         Toast.makeText(context, getText(R.string.permission_denied_need_config), Toast.LENGTH_LONG).show()
@@ -194,9 +198,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         }
         return allSuccess
     }
+//---------------------------------------------------------------------------------------------------------------------
 
-    //Funcion para abrir la galeria y obtener la foto
-
+//Funcion para abrir la galeria y obtener la foto
+//-------------------------------------------------------------------------------------------------------
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CAMERA) {
@@ -230,12 +235,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             val result = CropImage.getActivityResult(data)
             try {
                 val resultUri = result.uri //Tomamos el resultado de la imagen, lo pasamos a uri
-                val bitmap = requireActivity().contentResolver.openInputStream(resultUri)
-                val photoBitmap = BitmapFactory.decodeStream(bitmap)
-                binding.imageProfile.setImageBitmap(photoBitmap)
                 uploadImage(resultUri)
-                val bitmap2: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, resultUri)
-                saveToInternalStorage(bitmap2, requireContext())
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
@@ -249,19 +249,19 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     //El dialogo para seleccionar la imagen
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(context)
-        pictureDialog.setTitle("Selección")
-        val pictureDialogItems = arrayOf("Desde Galeria", "Desde Cámara")
+        pictureDialog.setTitle(getText(R.string.select))
+        val pictureDialogItems = arrayOf(getText(R.string.from_gallery), getText(R.string.from_camera))
         pictureDialog.setItems(pictureDialogItems
         ) { _, which ->
             when (which) {
-                0 -> choosePhotoFromGallary()
+                0 -> choosePhotoFromGallery()
                 1 -> takePhotoFromCamera()
             }
         }
         pictureDialog.show()
     }
 
-    private fun choosePhotoFromGallary() {
+    private fun choosePhotoFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI) //Instanciamos el intent para tomar del almacenamiento
         intent.type = "image/*" //Los tipos de valores que pude tomar
         requireActivity().startActivityFromFragment(this, intent, GALLERY) //Lanzamos la actividad
@@ -274,38 +274,58 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             put(MediaStore.Images.Media.TITLE, title)
             put(MediaStore.Images.Media.DESCRIPTION, "Image capture by camera")
         }
-        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) //Nos pide unos valores que se cargan en Values
+        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) //Nos pie unos valores que se cargan en Values
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri) //Ponemos la imagen en un extra
         requireActivity().startActivityFromFragment(this, intent, CAMERA) //Lanzamos la actividad
     }
 
     //Sube la imagen original al servidor
     private fun uploadImage(path: Uri?) {
+
+        //Un dialogo de proceso
+        //Lamentablemente "Deprecated", como casi todo
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setTitle(getText(R.string.uploading_image))
+        progressDialog.setCancelable(false) //Que no sea cancelable hasta que la tarea termine
+        progressDialog.show()
+
+        //UID del usuario, para el nombre del archivo
         val user: String = auth.currentUser?.uid.toString()
-        val storage = FirebaseStorage.getInstance().getReference("users")
-        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path) //Obtenemos la imagen de la ubicacion que pasamos anteriormente
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos) //Convertimos la imagen a byte
-        val data = baos.toByteArray() //La almacenamos
-        val imageNoResized = storage.child(user)
-        val uploadTask = imageNoResized.putBytes(data)
+        //La referencia a la BD
+        val storage = FirebaseStorage.getInstance().getReference("users/$user")
+        //Pasamos de URI a Bitmap
+        val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, path)
         //La subimos
-        uploadTask.addOnSuccessListener{
-            TODO("Buscar la forma de colocar un cartel de carga")
-        } .addOnFailureListener {
-        }
+        storage.putFile(path!!)
+            .addOnSuccessListener{
+                //Ponemos la imagen en la vista
+                binding.imageProfile.setImageBitmap(bitmap)
+                //La guardamos en la memoria del telefono
+                saveToInternalStorage(bitmap, requireContext())
+                //Sacamos el dialogo de proceso
+                if (progressDialog.isShowing){
+                    progressDialog.dismiss()
+                }
+                Toast.makeText(context, getText(R.string.upload_success), Toast.LENGTH_LONG).show()
+            }
+                .addOnFailureListener {
+                    Toast.makeText(context, getText(R.string.failure_upload), Toast.LENGTH_LONG).show()
+                    if (progressDialog.isShowing){
+                        progressDialog.dismiss()
+                    }
+            }
     }
 
     //Guarda la imagen en el almacenamiento interno (thumbnail)
     private fun saveToInternalStorage(bitmap: Bitmap, context: Context): String {
         val name = auth.currentUser?.uid
-        //Obtenemos la direccion para guardar la imagen
+        //Obtenemos la direccion para guardian la imagen
         val cw = ContextWrapper(context.applicationContext)
         // path: /data/data/yourapp/app_data/.thumbnails
         val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE)
         // Creamos la direccion
         Log.d("PATH", directory.path)
-        val mypath = File(directory, "$name.jpg")
+        val myPath = File(directory, "$name.jpg")
 
         //Creamos una imagen thumbnail para facilitar la carga
         val thumbImage: Bitmap = ThumbnailUtils.extractThumbnail(
@@ -316,7 +336,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
 
         var fos: FileOutputStream? = null
         try {
-            fos = FileOutputStream(mypath)
+            fos = FileOutputStream(myPath)
             thumbImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -336,8 +356,8 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         val cw = ContextWrapper(context.applicationContext)
         val directory = cw.getDir(".thumbnails", Context.MODE_PRIVATE) //Asignamos un directorio en los archivos de la app
         Log.d("PATH", directory.path) //Mostramos el directorio en el Logcat
-        val mypath = File(directory, "$name.jpg") //Creamos el archivo temporal
-        val bitmap = BitmapFactory.decodeFile(mypath.absolutePath) //Colocamos la imagen en el archivo
+        val myPath = File(directory, "$name.jpg") //Creamos el archivo temporal
+        val bitmap = BitmapFactory.decodeFile(myPath.absolutePath) //Colocamos la imagen en el archivo
         if (bitmap != null){
             binding.imageProfile.setImageBitmap(bitmap) //Si la imagen existe, se coloca
         } else {
@@ -355,9 +375,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             val bitmap = BitmapFactory.decodeFile(localFile.absolutePath) //Lo convertimos a bitmap
             saveToInternalStorage(bitmap, requireContext()) //Lo guardamos en el almacenamiento interno como thumbnail
         } .addOnFailureListener {
-            Toast.makeText(context, "Todo mal", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getText(R.string.failure_upload), Toast.LENGTH_LONG).show()
         }
     }
+//-------------------------------------------------------------------------------------------------------
 
     private fun logOut(){
         FirebaseAuth.getInstance().signOut()
@@ -387,6 +408,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
     private fun modify(uid: String){
         binding.ok.animate().translationX(0f).alpha(1F).setDuration(500).setStartDelay(300).start()
         binding.containerGone.isVisible = true
+        binding.containerGone.animate()
+            .alpha(1f)
+            .setDuration(750)
+            .setListener(null)
         binding.data.text = getText(R.string.back)
         binding.data.backgroundTintList = resources.getColorStateList(R.color.colorAccent)
         binding.logout.backgroundTintList = resources.getColorStateList(R.color.Secondary)
@@ -474,10 +499,10 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
         val data: Any = UserInfo(email, lastName, name, pass, phone)
         db.setValue(data)
             .addOnSuccessListener {
-                Toast.makeText(context, "Se actualizaron los datos", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, getText(R.string.data_ok), Toast.LENGTH_LONG).show()
             }.addOnFailureListener {
-                Toast.makeText(context, "Error al actualizar datos!", Toast.LENGTH_LONG).show()
-                Log.e("Firebase", "Error updating data", it)
+                Toast.makeText(context, getText(R.string.data_error), Toast.LENGTH_LONG).show()
+                Log.e("FIREBASE", "ERROR UPDATING DATA", it)
             }
     }
 
@@ -488,7 +513,7 @@ class MyAccountFragment : Fragment(), DialogMessageSimple.Data {
             binding.pass.isEnabled = true
             binding.repPass.isEnabled = true
         } else {
-            Toast.makeText(context, "La contraseña no coincide", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getText(R.string.password_mismatch), Toast.LENGTH_LONG).show()
         }
         super.password(pass)
     }
